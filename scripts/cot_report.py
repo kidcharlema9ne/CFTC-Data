@@ -17,6 +17,7 @@ FINAL RULES (do not change unless Michael says so):
   are net long, red if net short (real net position, not the index); dark for group 1, light
   for group 2. Nothing else in the table is coloured.
 - SYMBOL MARKS: "*" = 40-pt move (text only); "+" = Comm 52 also at 0 or 100 (after the "*").
+- No Comm Net column (net position is still used for the green/red).
 - No Mine, "Comm 26 six wks ago" or "weeks since 40-pt move" columns.
 """
 import io
@@ -220,7 +221,7 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
     res = pd.concat([top, mid, rest])
     heads = ["Market", "IBKR", "Comm 26", "Large 26", "Small 26", "Comm 26 chg (6 wk)",
              "Chg (6 wk) as of 6 wks ago",
-             "Comm 52", "Large 52", "Small 52", "Open Int", "Comm jump 1wk (% OI)", "Jump z", "Comm Net"]
+             "Comm 52", "Large 52", "Small 52", "Open Int", "Comm jump 1wk (% OI)", "Jump z"]
     fmt = lambda v, f: "" if pd.isna(v) else format(v, f)
     rows = []
     for _, r in res.iterrows():
@@ -238,7 +239,7 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
                  ("", fmt(r["move6_ago6"], "+.0f")),
                  ("", fmt(r["comm_52"], ".0f")), ("", fmt(r["large_52"], ".0f")), ("", fmt(r["small_52"], ".0f")),
                  ("", fmt(r["oi"], ",.0f")), ("", fmt(r["comm_jump_pct_oi"], "+.2f")),
-                 ("", fmt(r["jump_z"], "+.2f")), ("", fmt(r["comm_net"], ",.0f"))]
+                 ("", fmt(r["jump_z"], "+.2f"))]
         rows.append("<tr>" + "".join(
             f'<td style="{s}">{v}</td>' for s, v in cells) + "</tr>")
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8">
