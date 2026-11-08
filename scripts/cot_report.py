@@ -18,13 +18,15 @@ FINAL RULES (do not change unless Michael says so):
   for group 2. Nothing else in the table is coloured.
 - SYMBOL MARKS: "+" = 40-pt move (text only); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
   ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
-  actually net short (last mark).
+  actually net short; "&" = green and above the 20-day SMA, or red and below it.
 - No Comm Net column.
 - No Mine, "Comm 26 six wks ago" or "weeks since 40-pt move" columns.
 """
 import io
+import json
 import sys
 import zipfile
+from datetime import date
 from pathlib import Path
 
 import numpy as np
@@ -36,6 +38,11 @@ THIN = {"SPXDIVAN","AIGCI","MFS","MME","DJUSRE","HH","EMD"}  # thinly traded at 
 MIN_HIST_WEEKS = 156
 MOVE_WEEKS = 6
 MOVE_THRESHOLD = 40
+PRICE_ROOTS = {
+    "6A": "A6", "6B": "B6", "6C": "AD", "6E": "E6", "6J": "J1",
+    "6L": "BR", "6M": "MP", "6N": "N6", "6S": "E1", "ZB": "US",
+    "BRR": "BTC", "LBR": "LBS",
+}
 
 # CFTC market name -> (IBKR symbol, exchange). Matched against IBKR's published
 # exchange fee schedules (CME/CBOT/NYMEX/COMEX/ICE US). Verify in IBKR's Product Search.
@@ -209,7 +216,19 @@ def build(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
-def build_html(res: pd.DataFrame, asof: str) -> str:
+def load_sma20(repo: Path, asof: str) -> tuple[str, dict]:
+    try:
+        snapshot = json.loads((repo / "data" / "futures_sma20.json").read_text(encoding="utf-8"))
+        price_date = date.fromisoformat(snapshot["as_of"])
+        symbols = snapshot["symbols"]
+        if price_date >= date.fromisoformat(asof) and isinstance(symbols, dict) and symbols:
+            return price_date.isoformat(), symbols
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    return "", {}
+
+
+def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict = None) -> str:
     ext = lambda v: v >= 99.5 or v < 0.5  # matches the rounded value shown in the table
     res = res.copy()
     res["name"] = res["name"].str.replace(r" - (CHICAGO|NEW YORK|ICE|COMMODITY|CBOE).*$", "", regex=True)
@@ -226,6 +245,8 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
              "Chg (6 wk) as of 6 wks ago",
              "Comm 52", "Large 52", "Small 52", "Open Int", "Comm jump 1wk (% OI)", "Jump z"]
     fmt = lambda v, f: "" if pd.isna(v) else format(v, f)
+    sma20 = sma20 or {}
+    price_note = f"Daily futures close as of {price_date}." if price_date else "Current price snapshot unavailable."
     rows = []
     for _, r in res.iterrows():
         style = ""
@@ -242,6 +263,10 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
             marks += "*"
         if (r["comm_26"] >= 99.5 and r["comm_net"] > 0) or (r["comm_26"] < 0.5 and r["comm_net"] < 0):
             marks += ">"
+        if r["c_ext"]:
+            trend = sma20.get(PRICE_ROOTS.get(r["ibkr"], r["ibkr"]))
+            if trend == ("above" if lng else "below"):
+                marks += "&amp;"
         cells = [(style, r["name"]), (style, r["ibkr"] + marks),
                  ("", fmt(r["comm_26"], ".0f")), ("", fmt(r["large_26"], ".0f")), ("", fmt(r["small_26"], ".0f")),
                  ("", fmt(r["comm_26_move6"], "+.0f")),
@@ -267,6 +292,7 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <p><b>Top of the list:</b> Comm 26 at 0 or 100 and Large 26 and Small 26 both at 0 or 100 ({int(res['top'].sum())} today).
 <b>Market/IBKR colour (Comm 26 at 0 or 100):</b> Comm 26 = 100 is green, Comm 26 = 0 is red; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
 <b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
+<p><b>&amp;</b> = green and above the 20-day simple moving average, or red and below it. {price_note}</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
 </table></div></body></html>"""
@@ -283,9 +309,11 @@ def main(repo: str = None):
     res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
     asof = f"{latest:%Y-%m-%d}"
     # One fixed filename, overwritten every run, so reports never pile up. The date is inside the file.
-    (out / "COT_Report_latest.html").write_text(build_html(res, asof), encoding="utf-8")
+    price_date, sma20 = load_sma20(repo_path, asof)
+    (out / "COT_Report_latest.html").write_text(build_html(res, asof, price_date, sma20), encoding="utf-8")
     print(f"{len(res)} markets as of {asof} -> {out / 'COT_Report_latest.html'}")
 
 
 if __name__ == "__main__":
     main(sys.argv[1] if len(sys.argv) > 1 else None)
+

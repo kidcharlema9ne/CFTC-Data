@@ -2,6 +2,9 @@ name: Generate COT HTML report
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [scripts/cot_report.py, data/futures_sma20.json]
 
 permissions:
   contents: read
@@ -33,7 +36,7 @@ jobs:
             test -s "data/raw/legacy_fut/deacot${year}.zip"
           done
 
-      - name: Run unchanged report script
+      - name: Generate report
         run: python3 scripts/cot_report.py
 
       - name: Upload HTML report
@@ -43,3 +46,4 @@ jobs:
           path: reports/COT_Report_latest.html
           if-no-files-found: error
           retention-days: 30
+
