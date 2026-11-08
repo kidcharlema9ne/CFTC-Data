@@ -16,7 +16,9 @@ FINAL RULES (do not change unless Michael says so):
 - COLOUR: only the Market and IBKR cells, only when Comm 26 is 0 or 100: Comm 26 = 100 is
   green, Comm 26 = 0 is red (by the index, NOT the net position); dark for group 1, light
   for group 2. Nothing else in the table is coloured.
-- SYMBOL MARKS: "*" = 40-pt move (text only); "+" = Comm 52 also at 0 or 100 (after the "*").
+- SYMBOL MARKS: "*" = 40-pt move (text only); "+" = Comm 52 also at 0 or 100 (after the "*");
+  ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
+  actually net short (last mark).
 - No Comm Net column.
 - No Mine, "Comm 26 six wks ago" or "weeks since 40-pt move" columns.
 """
@@ -233,6 +235,8 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
             else:
                 style = "background:#c6efce;font-weight:bold" if lng else "background:#ffc7ce;font-weight:bold"
         plus = "+" if ext(r["comm_52"]) else ""
+        if (r["comm_26"] >= 99.5 and r["comm_net"] > 0) or (r["comm_26"] < 0.5 and r["comm_net"] < 0):
+            plus += ">"
         cells = [(style, r["name"]), (style, r["ibkr"] + ("*" if r["star"] else "") + plus),
                  ("", fmt(r["comm_26"], ".0f")), ("", fmt(r["large_26"], ".0f")), ("", fmt(r["small_26"], ".0f")),
                  ("", fmt(r["comm_26_move6"], "+.0f")),
@@ -257,7 +261,7 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
 <p><b>Top of the list:</b> Comm 26 at 0 or 100 and Large 26 and Small 26 both at 0 or 100 ({int(res['top'].sum())} today).
 <b>Market/IBKR colour (Comm 26 at 0 or 100):</b> Comm 26 = 100 is green, Comm 26 = 0 is red; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
-<b>*</b> after the symbol = Comm 26 moved 40+ points in 6 weeks (Briese CoT Movement Index). <b>+</b> = Comm 52 is also at 0 or 100.</p>
+<b>*</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>+</b> = Comm 52 is also at 0 or 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
 </table></div></body></html>"""
