@@ -10,3 +10,6 @@ Report families: legacy futures-only, legacy futures+options, supplemental (CIT)
 disaggregated (fut / fut+opt), Traders in Financial Futures (fut / fut+opt).
 
 First run: Actions tab -> "Download CFTC COT data" -> Run workflow.
+
+## Running the COT report
+See RUN_REPORT.md: `python3 scripts/cot_report.py` writes `reports/COT_Report_<date>.html`.
