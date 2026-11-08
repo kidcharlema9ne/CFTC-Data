@@ -31,8 +31,8 @@ FAMILIES = {
     "supplemental_cit": (2006, "dea_cit_txt_{y}.zip", ["dea_cit_txt_2006_2016.zip"]),
     "disagg_fut": (2006, "fut_disagg_txt_{y}.zip", ["fut_disagg_txt_hist_2006_2016.zip"]),
     "disagg_futopt": (2006, "com_disagg_txt_{y}.zip", ["com_disagg_txt_hist_2006_2016.zip"]),
-    "tff_fut": (2006, "fut_fin_txt_{y}.zip", ["fut_fin_txt_2006_2016.zip"]),
-    "tff_futopt": (2006, "com_fin_txt_{y}.zip", ["com_fin_txt_2006_2016.zip"]),
+    "tff_fut": (2006, "fut_fin_txt_{y}.zip", ["fut_fin_txt_2006_2016.zip", "fin_fut_txt_2006_2016.zip"]),
+    "tff_futopt": (2006, "com_fin_txt_{y}.zip", ["com_fin_txt_2006_2016.zip", "fin_com_txt_2006_2016.zip"]),
 }
 
 HEADERS = {"User-Agent": "cot-history/1.0 (personal research archive)"}
