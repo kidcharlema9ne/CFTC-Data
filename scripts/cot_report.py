@@ -2,7 +2,7 @@
 """
 COT report (HTML) - the ONE command to run the report. No other script is needed.
 
-    python3 scripts/cot_report.py            # from the repo root; writes reports/COT_Report_<date>.html
+    python3 scripts/cot_report.py            # from the repo root; writes reports/COT_Report_latest.html (overwritten each run)
 
 FINAL RULES (do not change unless Michael says so):
 - Legacy futures-only COT from data/raw/legacy_fut; weekly era from 1992-10-01; 156+ clean weeks.
@@ -277,9 +277,9 @@ def main(repo: str = None):
     res = res[(res["date"] == latest) & (res["oi"] >= MIN_OI) & (~res["ibkr"].isin(THIN))].copy()
     res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
     asof = f"{latest:%Y-%m-%d}"
-    res.drop(columns=["date", "exch"]).to_csv(out / f"cot_index_report_{asof}.csv", index=False)
-    (out / f"COT_Report_{asof}.html").write_text(build_html(res, asof), encoding="utf-8")
-    print(f"{len(res)} markets as of {asof} -> {out / f'COT_Report_{asof}.html'}")
+    # One fixed filename, overwritten every run, so reports never pile up. The date is inside the file.
+    (out / "COT_Report_latest.html").write_text(build_html(res, asof), encoding="utf-8")
+    print(f"{len(res)} markets as of {asof} -> {out / 'COT_Report_latest.html'}")
 
 
 if __name__ == "__main__":
