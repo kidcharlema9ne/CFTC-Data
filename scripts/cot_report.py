@@ -9,14 +9,14 @@ FINAL RULES (do not change unless Michael says so):
 - Only IBKR-tradable futures (IBKR map below), open interest >= 45,000 as a liquidity proxy,
   minus thin products (THIN). No "Mine" column.
 - Index = (net - min)/(max - min)*100 over 26 or 52 weeks. Briese CoT Movement Index = Comm 26 now
-  minus 6 weeks ago; |change| >= 40 -> "*" after the IBKR symbol (text only, no colour).
+  minus 6 weeks ago; |change| >= 40 -> "+" after the IBKR symbol (text only, no colour).
 - ORDER: (1) dark group: Comm 26 is 0 or 100 AND Large 26 and Small 26 are each 0 or 100 (extreme = rounds to 0 or 100);
   (2) light group: Comm 26 is 0 or 100 but at least one spec is not; (3) everything else by
   Comm 26 descending. Groups 1-2 sorted by |Comm 26| then |6-wk change|.
 - COLOUR: only the Market and IBKR cells, only when Comm 26 is 0 or 100: Comm 26 = 100 is
   green, Comm 26 = 0 is red (by the index, NOT the net position); dark for group 1, light
   for group 2. Nothing else in the table is coloured.
-- SYMBOL MARKS: "*" = 40-pt move (text only); "+" = Comm 52 also at 0 or 100 (after the "*");
+- SYMBOL MARKS: "+" = 40-pt move (text only); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
   ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
   actually net short (last mark).
 - No Comm Net column.
@@ -192,6 +192,7 @@ def build(df: pd.DataFrame) -> pd.DataFrame:
         for grp in ("comm", "large", "small"):
             for n in (26, 52):
                 row[f"{grp}_{n}"] = cot_index(g[grp], n).iloc[-1]
+        row["comm_56"] = cot_index(g["comm"], 56).iloc[-1]
         ci = cot_index(g["comm"], 26)
         mv = ci.diff(MOVE_WEEKS)
         row["comm_26_move6"] = mv.iloc[-1]
@@ -213,7 +214,7 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
     res = res.copy()
     res["name"] = res["name"].str.replace(r" - (CHICAGO|NEW YORK|ICE|COMMODITY|CBOE).*$", "", regex=True)
     res["top"] = res.apply(lambda r: ext(r["comm_26"]) and ext(r["large_26"]) and ext(r["small_26"]), axis=1)
-    res["star"] = res["comm_26_move6"].abs() >= MOVE_THRESHOLD
+    res["plus"] = res["comm_26_move6"].abs() >= MOVE_THRESHOLD
     res["abs_comm"] = res["comm_26"].abs()
     res["abs_move"] = res["comm_26_move6"].abs()
     res["c_ext"] = res["comm_26"].apply(ext)
@@ -234,10 +235,14 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
                 style = "background:#006100;color:#fff;font-weight:bold" if lng else "background:#c00000;color:#fff;font-weight:bold"
             else:
                 style = "background:#c6efce;font-weight:bold" if lng else "background:#ffc7ce;font-weight:bold"
-        plus = "+" if ext(r["comm_52"]) else ""
+        marks = "+" if r["plus"] else ""
+        if (r["comm_26"] >= 99.5 and r["comm_56"] >= 99.5) or (
+            r["comm_26"] < 0.5 and r["comm_56"] < 0.5
+        ):
+            marks += "*"
         if (r["comm_26"] >= 99.5 and r["comm_net"] > 0) or (r["comm_26"] < 0.5 and r["comm_net"] < 0):
-            plus += ">"
-        cells = [(style, r["name"]), (style, r["ibkr"] + ("*" if r["star"] else "") + plus),
+            marks += ">"
+        cells = [(style, r["name"]), (style, r["ibkr"] + marks),
                  ("", fmt(r["comm_26"], ".0f")), ("", fmt(r["large_26"], ".0f")), ("", fmt(r["small_26"], ".0f")),
                  ("", fmt(r["comm_26_move6"], "+.0f")),
                  ("", fmt(r["move6_ago6"], "+.0f")),
@@ -261,7 +266,7 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
 <p><b>Top of the list:</b> Comm 26 at 0 or 100 and Large 26 and Small 26 both at 0 or 100 ({int(res['top'].sum())} today).
 <b>Market/IBKR colour (Comm 26 at 0 or 100):</b> Comm 26 = 100 is green, Comm 26 = 0 is red; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
-<b>*</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>+</b> = Comm 52 is also at 0 or 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
+<b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
 </table></div></body></html>"""
