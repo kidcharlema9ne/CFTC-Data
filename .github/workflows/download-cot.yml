@@ -3,9 +3,15 @@ name: Download CFTC COT data
 on:
   workflow_dispatch:
   schedule:
-    # CFTC publishes Fridays 3:30pm ET (Monday after a holiday). 22:00 UTC is
-    # after that in both EST and EDT.
-    - cron: "0 22 * * 5,1"
+    # CFTC publishes Wednesdays and Fridays at 3:30pm ET (twice weekly starting
+    # December 2026; Friday-only before that, so the Wednesday run is a harmless
+    # no-op until then). GitHub cron is UTC-only, so each day has two entries:
+    # 20:30 UTC = 4:30pm EDT and 21:30 UTC = 4:30pm EST. The other entry fires
+    # an hour off (a harmless retry). The script only commits if data changed.
+    - cron: "30 20 * * 3,5"
+    - cron: "30 21 * * 3,5"
+    # Holiday catch-up: a holiday pushes a release to the next business day.
+    - cron: "30 21 * * 1,4"
 
 permissions:
   contents: write
