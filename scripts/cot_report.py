@@ -10,11 +10,14 @@ FINAL RULES (do not change unless Michael says so):
   minus thin products (THIN). No "Mine" column.
 - Index = (net - min)/(max - min)*100 over 26 or 52 weeks. Briese CoT Movement Index = Comm 26 now
   minus 6 weeks ago; |change| >= 40 -> "*" after the IBKR symbol (text only, no colour).
-- TOP GROUP: Comm 26 is 0 or 100 AND Large 26 and Small 26 are each 0 or 100. Sorted by
-  |Comm 26| descending (then |6-wk change|). Everything else follows, Comm 26 descending.
-- COLOUR: only the Market and IBKR cells, and only when Comm 26 = 100: dark green if
-  commercials are net long, dark red if net short (real net position, not the index).
-  Nothing else in the table is coloured.
+- ORDER: (1) dark group: Comm 26 is 0 or 100 AND Large 26 and Small 26 are each 0 or 100 (extreme = rounds to 0 or 100);
+  (2) light group: Comm 26 is 0 or 100 but at least one spec is not; (3) everything else by
+  Comm 26 descending. Groups 1-2 sorted by |Comm 26| then |6-wk change|.
+- COLOUR: only the Market and IBKR cells, only when Comm 26 is 0 or 100: green if commercials
+  are net long, red if net short (real net position, not the index); dark for group 1, light
+  for group 2. Nothing else in the table is coloured.
+- SYMBOL MARKS: "*" = 40-pt move (text only); "+" = Comm 52 also at 0 or 100 (after the "*").
+- No Mine, "Comm 26 six wks ago" or "weeks since 40-pt move" columns.
 """
 import io
 import sys
@@ -203,30 +206,36 @@ def build(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_html(res: pd.DataFrame, asof: str) -> str:
-    ext = lambda v: v >= 99.995 or v <= 0.005
+    ext = lambda v: v >= 99.5 or v < 0.5  # matches the rounded value shown in the table
     res = res.copy()
     res["name"] = res["name"].str.replace(r" - (CHICAGO|NEW YORK|ICE|COMMODITY|CBOE).*$", "", regex=True)
     res["top"] = res.apply(lambda r: ext(r["comm_26"]) and ext(r["large_26"]) and ext(r["small_26"]), axis=1)
     res["star"] = res["comm_26_move6"].abs() >= MOVE_THRESHOLD
     res["abs_comm"] = res["comm_26"].abs()
     res["abs_move"] = res["comm_26_move6"].abs()
+    res["c_ext"] = res["comm_26"].apply(ext)
     top = res[res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
-    rest = res[~res["top"]].sort_values(["comm_26", "comm_26_move6"], ascending=False)
-    res = pd.concat([top, rest])
+    mid = res[res["c_ext"] & ~res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
+    rest = res[~res["c_ext"]].sort_values(["comm_26", "comm_26_move6"], ascending=False)
+    res = pd.concat([top, mid, rest])
     heads = ["Market", "IBKR", "Comm 26", "Large 26", "Small 26", "Comm 26 chg (6 wk)",
-             "Comm 26 six wks ago", "Chg (6 wk) as of 6 wks ago", "Wks since last 40-pt move",
+             "Chg (6 wk) as of 6 wks ago",
              "Comm 52", "Large 52", "Small 52", "Open Int", "Comm jump 1wk (% OI)", "Jump z", "Comm Net"]
     fmt = lambda v, f: "" if pd.isna(v) else format(v, f)
     rows = []
     for _, r in res.iterrows():
         style = ""
-        if r["comm_26"] >= 99.995:
-            style = ("background:#006100;color:#fff;font-weight:bold" if r["comm_net"] > 0
-                     else "background:#c00000;color:#fff;font-weight:bold")
-        cells = [(style, r["name"]), (style, r["ibkr"] + ("*" if r["star"] else "")),
+        if r["c_ext"]:
+            lng = r["comm_net"] > 0
+            if r["top"]:
+                style = "background:#006100;color:#fff;font-weight:bold" if lng else "background:#c00000;color:#fff;font-weight:bold"
+            else:
+                style = "background:#c6efce;font-weight:bold" if lng else "background:#ffc7ce;font-weight:bold"
+        plus = "+" if ext(r["comm_52"]) else ""
+        cells = [(style, r["name"]), (style, r["ibkr"] + ("*" if r["star"] else "") + plus),
                  ("", fmt(r["comm_26"], ".0f")), ("", fmt(r["large_26"], ".0f")), ("", fmt(r["small_26"], ".0f")),
-                 ("", fmt(r["comm_26_move6"], "+.0f")), ("", fmt(r["comm_26_ago6"], ".0f")),
-                 ("", fmt(r["move6_ago6"], "+.0f")), ("", fmt(r["wks_since_signal"], ".0f")),
+                 ("", fmt(r["comm_26_move6"], "+.0f")),
+                 ("", fmt(r["move6_ago6"], "+.0f")),
                  ("", fmt(r["comm_52"], ".0f")), ("", fmt(r["large_52"], ".0f")), ("", fmt(r["small_52"], ".0f")),
                  ("", fmt(r["oi"], ",.0f")), ("", fmt(r["comm_jump_pct_oi"], "+.2f")),
                  ("", fmt(r["jump_z"], "+.2f")), ("", fmt(r["comm_net"], ",.0f"))]
@@ -246,8 +255,8 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <h1>Legacy COT Index Report &mdash; liquid IBKR futures &mdash; as of {asof}</h1>
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
 <p><b>Top of the list:</b> Comm 26 at 0 or 100 and Large 26 and Small 26 both at 0 or 100 ({int(res['top'].sum())} today).
-<b>Market/IBKR colour:</b> Comm 26 = 100 &rarr; dark green if commercials are net long, dark red if net short.
-<b>*</b> after the symbol = Comm 26 moved 40+ points in 6 weeks (Briese CoT Movement Index).</p>
+<b>Market/IBKR colour (Comm 26 at 0 or 100):</b> green if commercials are net long, red if net short; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
+<b>*</b> after the symbol = Comm 26 moved 40+ points in 6 weeks (Briese CoT Movement Index). <b>+</b> = Comm 52 is also at 0 or 100.</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
 </table></div></body></html>"""
