@@ -13,11 +13,11 @@ FINAL RULES (do not change unless Michael says so):
 - ORDER: (1) dark group: Comm 26 is 0 or 100 AND Large 26 and Small 26 are each 0 or 100 (extreme = rounds to 0 or 100);
   (2) light group: Comm 26 is 0 or 100 but at least one spec is not; (3) everything else by
   Comm 26 descending. Groups 1-2 sorted by |Comm 26| then |6-wk change|.
-- COLOUR: only the Market and IBKR cells, only when Comm 26 is 0 or 100: green if commercials
-  are net long, red if net short (real net position, not the index); dark for group 1, light
+- COLOUR: only the Market and IBKR cells, only when Comm 26 is 0 or 100: Comm 26 = 100 is
+  green, Comm 26 = 0 is red (by the index, NOT the net position); dark for group 1, light
   for group 2. Nothing else in the table is coloured.
 - SYMBOL MARKS: "*" = 40-pt move (text only); "+" = Comm 52 also at 0 or 100 (after the "*").
-- No Comm Net column (net position is still used for the green/red).
+- No Comm Net column.
 - No Mine, "Comm 26 six wks ago" or "weeks since 40-pt move" columns.
 """
 import io
@@ -227,7 +227,7 @@ def build_html(res: pd.DataFrame, asof: str) -> str:
     for _, r in res.iterrows():
         style = ""
         if r["c_ext"]:
-            lng = r["comm_net"] > 0
+            lng = r["comm_26"] >= 99.5  # index 100 = green, index 0 = red
             if r["top"]:
                 style = "background:#006100;color:#fff;font-weight:bold" if lng else "background:#c00000;color:#fff;font-weight:bold"
             else:
@@ -256,7 +256,7 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <h1>Legacy COT Index Report &mdash; liquid IBKR futures &mdash; as of {asof}</h1>
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
 <p><b>Top of the list:</b> Comm 26 at 0 or 100 and Large 26 and Small 26 both at 0 or 100 ({int(res['top'].sum())} today).
-<b>Market/IBKR colour (Comm 26 at 0 or 100):</b> green if commercials are net long, red if net short; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
+<b>Market/IBKR colour (Comm 26 at 0 or 100):</b> Comm 26 = 100 is green, Comm 26 = 0 is red; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
 <b>*</b> after the symbol = Comm 26 moved 40+ points in 6 weeks (Briese CoT Movement Index). <b>+</b> = Comm 52 is also at 0 or 100.</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
