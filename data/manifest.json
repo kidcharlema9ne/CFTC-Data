@@ -1,0 +1,792 @@
+{
+  "disagg_fut/fut_disagg_txt_2010.zip": {
+    "bytes": 1004704,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "fef4827fbaa1a2a72ad3fe7ef0ca659ee4c85bc6857fdc096f4320b8a096322b"
+  },
+  "disagg_fut/fut_disagg_txt_2011.zip": {
+    "bytes": 1017591,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "9e47499610532150edddc1f43f8fc37cd87718d70022a6db9284f0152f815cf3"
+  },
+  "disagg_fut/fut_disagg_txt_2012.zip": {
+    "bytes": 1087758,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "79db37521556a5aa8acc84bd3ca86aa6bf80fb4c5d4a8013dfb215fc760f1e95"
+  },
+  "disagg_fut/fut_disagg_txt_2013.zip": {
+    "bytes": 1393844,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "c9bc647013b9b2f1c18e96fdaed95dc94af57c3a949e9fe7dd94aee06f3837bc"
+  },
+  "disagg_fut/fut_disagg_txt_2014.zip": {
+    "bytes": 1649560,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "a29872d680f595078062130274374ecb38dc2a24d86f1531a59f52b8abca7eea"
+  },
+  "disagg_fut/fut_disagg_txt_2015.zip": {
+    "bytes": 1697554,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "36aacb4389831a89996ba5366c91eedeaa32a55abca8265325bc52d74b06ca34"
+  },
+  "disagg_fut/fut_disagg_txt_2016.zip": {
+    "bytes": 1834436,
+    "fetched_utc": "2026-11-08T10:21:54+00:00",
+    "sha256": "50f52674fd924d24c794b921c29342be7d35cbe0a241ac823925ccf43ca1a6d2"
+  },
+  "disagg_fut/fut_disagg_txt_2017.zip": {
+    "bytes": 1805242,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "6fc467b989df527a4fbea4ba07185e8951f35cb72563f156488904a37c100e43"
+  },
+  "disagg_fut/fut_disagg_txt_2018.zip": {
+    "bytes": 1961740,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "df4bf7d72e8984d6ea04087f793c9f2bf3503ea8c2149f4b01eedeef4fbe40a8"
+  },
+  "disagg_fut/fut_disagg_txt_2019.zip": {
+    "bytes": 1981332,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "942a438bcc6f66e65aaf594a1a1fdb8c1505fe4a0feece77a1fd97270317e753"
+  },
+  "disagg_fut/fut_disagg_txt_2020.zip": {
+    "bytes": 1930322,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "0aa03c0fd6360f56b6897b6eaff30e8dba774c826bf93cac61598312e19bd1cd"
+  },
+  "disagg_fut/fut_disagg_txt_2021.zip": {
+    "bytes": 1943806,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "12d5d49a8963367fd3439050e3e20e6a5338757dfa083432795c5556827ff8ae"
+  },
+  "disagg_fut/fut_disagg_txt_2022.zip": {
+    "bytes": 2049193,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "74205d75d4d7b75a9f4159ef2e6abed53eeb4771a74e5a4bf78bc0451410ab7f"
+  },
+  "disagg_fut/fut_disagg_txt_2023.zip": {
+    "bytes": 2202972,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "9fe75dba0256819d476bb0d01f9e8e5ac6ec2c4390f609a7e3259e85796b79ce"
+  },
+  "disagg_fut/fut_disagg_txt_2024.zip": {
+    "bytes": 2381296,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "5e40f60993120d26c116ab347beaf93702f5da60c7bdccbbee43cb3d0a91d01a"
+  },
+  "disagg_fut/fut_disagg_txt_2025.zip": {
+    "bytes": 2420076,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "17ac2fef1b53303d01e486bbf5768a4e062308a3c34a2970871f3eab89829cbc"
+  },
+  "disagg_fut/fut_disagg_txt_2026.zip": {
+    "bytes": 2127622,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "cde28aa12ccb8bc1ddcf73b3bdd6b92211c124322d38954e37e50e68483ef173"
+  },
+  "disagg_fut/fut_disagg_txt_hist_2006_2016.zip": {
+    "bytes": 12240715,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "68c593209136ab7cfda2ec17ac5ed0bffb4b19a49f52c01308b4cedb315514c8"
+  },
+  "disagg_futopt/com_disagg_txt_2010.zip": {
+    "bytes": 1078605,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "cc6e2df1d43a1f2973a2a873487339685109ed39a1b844f2b74a325d56295280"
+  },
+  "disagg_futopt/com_disagg_txt_2011.zip": {
+    "bytes": 1085189,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "11fef509c4eaf0fa1c1fcb6f089ab261c51bf2a1f71b5526ea35470b2c4c448c"
+  },
+  "disagg_futopt/com_disagg_txt_2012.zip": {
+    "bytes": 1134994,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "3c540d6619a2336a181125c38c8d2e7e292fab4dabf4cee9b27f1dfcd174d331"
+  },
+  "disagg_futopt/com_disagg_txt_2013.zip": {
+    "bytes": 1483370,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "ed9ce72535c2559eb1ab5631829ef12d92cf03406441af5672b2fe8f6d9f912d"
+  },
+  "disagg_futopt/com_disagg_txt_2014.zip": {
+    "bytes": 1746252,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "a9aeae4f8c8b1b249af14b494bf12b38be6204b0712d6989d5cb2fef03b9bf7c"
+  },
+  "disagg_futopt/com_disagg_txt_2015.zip": {
+    "bytes": 1800682,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "3e6670fe49a029690192748e583383099f94eb2d8b4d89b9cdfb0d967af62e1f"
+  },
+  "disagg_futopt/com_disagg_txt_2016.zip": {
+    "bytes": 1926290,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "71a06d9bf2b5f1375cae85b0e6e356928cd1c1054c679a2fc66136e6376b75c5"
+  },
+  "disagg_futopt/com_disagg_txt_2017.zip": {
+    "bytes": 1794263,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "83b75e0da711593f1f25fc569e3c6284693e338e060b22b9d97a38faccf26700"
+  },
+  "disagg_futopt/com_disagg_txt_2018.zip": {
+    "bytes": 2047343,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "b6fb4aac99e4b1dbab468e5948529a8b4e7a86edd045aa06906cb5703e5b2cb8"
+  },
+  "disagg_futopt/com_disagg_txt_2019.zip": {
+    "bytes": 2056717,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "80b8038908c0f5ac2885d4ba9b7c7c2b9f005ba764151cd5c2234f071e8bd7ab"
+  },
+  "disagg_futopt/com_disagg_txt_2020.zip": {
+    "bytes": 2005733,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "4fa720045cfb9577505bb28cea44e95bf2fcfc0f33f804b332d8f189dca1d9a9"
+  },
+  "disagg_futopt/com_disagg_txt_2021.zip": {
+    "bytes": 2013057,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "2f745ebcdb5a02d0716ed9d7de2f4925b03943d1dcca244cc8a346d27860571d"
+  },
+  "disagg_futopt/com_disagg_txt_2022.zip": {
+    "bytes": 2105261,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "9307ad2ee3ab61ed134625bebe1307923c64d8eebab925cb421c80d2fdd30287"
+  },
+  "disagg_futopt/com_disagg_txt_2023.zip": {
+    "bytes": 2257219,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "73eb9a8f17e249cce182b4c41786b40151c48e9b7fbe4b20f02c1c1b66455c3b"
+  },
+  "disagg_futopt/com_disagg_txt_2024.zip": {
+    "bytes": 2445082,
+    "fetched_utc": "2026-11-08T10:21:57+00:00",
+    "sha256": "711b1b8da84dc3ba1bf8c76e743197569f7cd88b9bb3fedb7225e78a7fb7f570"
+  },
+  "disagg_futopt/com_disagg_txt_2025.zip": {
+    "bytes": 2498864,
+    "fetched_utc": "2026-11-08T10:21:58+00:00",
+    "sha256": "727c78bb431fea3994a4c73cebafd17e33e0ae83bea199a66ff65b742e9b25bc"
+  },
+  "disagg_futopt/com_disagg_txt_2026.zip": {
+    "bytes": 2211351,
+    "fetched_utc": "2026-11-08T10:21:58+00:00",
+    "sha256": "33a130d9447ece7957be9e77351c8a82f92362417aaab2e095f276266672f3ed"
+  },
+  "disagg_futopt/com_disagg_txt_hist_2006_2016.zip": {
+    "bytes": 12912932,
+    "fetched_utc": "2026-11-08T10:21:55+00:00",
+    "sha256": "28b9fe128d0894316fc77a30d466d1e41749e52f053c7b97d87a8b9d1806d3c0"
+  },
+  "legacy_fut/deacot1986.zip": {
+    "bytes": 289403,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "13811414cb825ca8467476b859205bd233e87f9a6d48abe3038425ecb6050b7e"
+  },
+  "legacy_fut/deacot1986_2016.zip": {
+    "bytes": 22917634,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "e9221f0f2c819f63c1f611e72f21fca31ee9142316127f9d1d69978d2c684791"
+  },
+  "legacy_fut/deacot1987.zip": {
+    "bytes": 291208,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "ca3a6d3a47b002a362f78db873f989026b5da28dcd9fd46bc4e7c38ee92ea9fe"
+  },
+  "legacy_fut/deacot1988.zip": {
+    "bytes": 292585,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "a4171d2bfaeba0a73c18ae158a27fe24eaf44346c844099ded5c7f06c6479f6c"
+  },
+  "legacy_fut/deacot1989.zip": {
+    "bytes": 302255,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "a000df80ad94b2782b9d5d6be0fbfca017d5ef91c521f6faf4e96b2080cd7838"
+  },
+  "legacy_fut/deacot1990.zip": {
+    "bytes": 311363,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "34195e38be1b90c0dc2cb0d1fe6f4fae8228c7a48dbb9ba92cc57a5e25610ba7"
+  },
+  "legacy_fut/deacot1991.zip": {
+    "bytes": 315655,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "69e2c5bbf85486a2a266af2cf9b881163f9d2c8fd91cc0ab1d6339d7a837cd93"
+  },
+  "legacy_fut/deacot1992.zip": {
+    "bytes": 429281,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "f3de3d85f8f5cf717607caa1f4010cc721f19a671d39448df9e62ae162c5ac76"
+  },
+  "legacy_fut/deacot1993.zip": {
+    "bytes": 716344,
+    "fetched_utc": "2026-11-08T10:21:46+00:00",
+    "sha256": "d8fefcf9307a9fb1dc5219578c97e3004fa79c96a03b6613e5075883dd851cbb"
+  },
+  "legacy_fut/deacot1994.zip": {
+    "bytes": 739897,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "8c25bbfa6e5410b2bf35db526322888157a4212a9cb4c0b96747a5bcca135608"
+  },
+  "legacy_fut/deacot1995.zip": {
+    "bytes": 746593,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "a0e35371645cf6ed0674f46087db73a1d20034ca6df9cd57d5487110ebc63ad5"
+  },
+  "legacy_fut/deacot1996.zip": {
+    "bytes": 834656,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "c6d5aa72100deab780d0b6a3800fcfb8c40b26370050adb083d35436e750eb0e"
+  },
+  "legacy_fut/deacot1997.zip": {
+    "bytes": 860259,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "f96c77c777b65b69dfa8061a8ae7147d37141c607b89e28196a8f50dea24b73b"
+  },
+  "legacy_fut/deacot1998.zip": {
+    "bytes": 882739,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "e8056ea95d3ffbf027c36e837155214a12e50c338070063998bf062374d5934c"
+  },
+  "legacy_fut/deacot1999.zip": {
+    "bytes": 862059,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "0c4691c2d780d1eae58933e2194c3d406a7c573ccfaa7f3ddb268d1a1c8a80ab"
+  },
+  "legacy_fut/deacot2000.zip": {
+    "bytes": 602915,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "b4c06549db2f9a193ea5ee93851c090cdd76917595e76cdd01ca67a792c8277c"
+  },
+  "legacy_fut/deacot2001.zip": {
+    "bytes": 543513,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "d3227702d8fdbc6684de5f01a4b5652a72ec8950862dedd7f1d42c656453759e"
+  },
+  "legacy_fut/deacot2002.zip": {
+    "bytes": 554233,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "7cb90880840b5c91519d4eddca3d43ffd77109e645f9e588926b98c3b31f400b"
+  },
+  "legacy_fut/deacot2003.zip": {
+    "bytes": 599665,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "0290e2148f7adc7b5cece86a2aebd512ddc226d70fa9a79697e5834c1272e300"
+  },
+  "legacy_fut/deacot2004.zip": {
+    "bytes": 649177,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "e1b4940a7e8a24d381e1ba38c0633bb23e6cf67312631975a6e8356914773e44"
+  },
+  "legacy_fut/deacot2005.zip": {
+    "bytes": 718285,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "af1d5fdfe6994d33afda5b2c3ff3941f84ea18f9e5f3167969bf2598835624c1"
+  },
+  "legacy_fut/deacot2006.zip": {
+    "bytes": 871821,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "9e1dfcd978321cc93303f37d3f7f13c5e10b965c72afa6862d93243b87de0901"
+  },
+  "legacy_fut/deacot2007.zip": {
+    "bytes": 868266,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "5c82366a086509465478014b269f90266e38a82f41c23136e964d71cd7b794a9"
+  },
+  "legacy_fut/deacot2008.zip": {
+    "bytes": 893057,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "97a76edebe3cf7cc93a6fa862799076e9863fb7cbc42e8dba4c8762c07249fb9"
+  },
+  "legacy_fut/deacot2009.zip": {
+    "bytes": 959612,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "5558e169e558ee15a861fb623e2a986aaafcdc178d7ab2eaf7dc628ed217b32b"
+  },
+  "legacy_fut/deacot2010.zip": {
+    "bytes": 1021288,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "ba52af024b2cc24f4bf7699950b70b0ae70ce2a123fca63e88c93f5d67561253"
+  },
+  "legacy_fut/deacot2011.zip": {
+    "bytes": 1046419,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "8872d6e7d43cc09d5d5834122dcbf4dd426dc0590faa394d041f603234e8d16a"
+  },
+  "legacy_fut/deacot2012.zip": {
+    "bytes": 1103492,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "018de1a8b9c8c87ccdcac31652f56828f9af3b44f89df2de474fd460a0dfd6de"
+  },
+  "legacy_fut/deacot2013.zip": {
+    "bytes": 1336525,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "881bed5906e156c23dc2036f6b4312f3c2215a7b9aebe51ee7973458ec0bf845"
+  },
+  "legacy_fut/deacot2014.zip": {
+    "bytes": 1545256,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "65e8c7111bc628c1bc2801a246e7872c574fdead67f210a5dd58303b384dba1a"
+  },
+  "legacy_fut/deacot2015.zip": {
+    "bytes": 1598000,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "768b7be61d0f9895dd6c3ddcef9f1449c85773bd61dc8cc656fd43d30531871b"
+  },
+  "legacy_fut/deacot2016.zip": {
+    "bytes": 1710723,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "186c95a12c71fdbd241b83679afcfff2cc900c779b67bfe9bcd091d16a7ca0ce"
+  },
+  "legacy_fut/deacot2017.zip": {
+    "bytes": 1711091,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "5e910b93b5af5e1c8f4006eaeee10109754ee5dd2c7f9d04520bd9770c8ece2b"
+  },
+  "legacy_fut/deacot2018.zip": {
+    "bytes": 1900546,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "adaecbfadf54f117308cc8a135cd9ba827deac3eb1489a5febc642c403728527"
+  },
+  "legacy_fut/deacot2019.zip": {
+    "bytes": 1904592,
+    "fetched_utc": "2026-11-08T10:21:47+00:00",
+    "sha256": "3f2707b5fcab1491329684c82cc03759ab66899839f533e09ff0a5dcf517b0c5"
+  },
+  "legacy_fut/deacot2020.zip": {
+    "bytes": 1838852,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "8c83c820e5f6fd193a0923aa02cfe520d20dbe74bba571a576c92baf7a186317"
+  },
+  "legacy_fut/deacot2021.zip": {
+    "bytes": 1882568,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "423d20412ec3fb629500fcbfbaa7b6973c5868965000d13963e9b63700c90952"
+  },
+  "legacy_fut/deacot2022.zip": {
+    "bytes": 1983765,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "206364f467eb0013b0a5f8e9526426cc6fcfc5bad4e4f91b25e00311a0184cfa"
+  },
+  "legacy_fut/deacot2023.zip": {
+    "bytes": 2116244,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "fd17a44cb7c9acb068515380f5c9ff450052d4a89f45d6b97f0d71ca2d69425c"
+  },
+  "legacy_fut/deacot2024.zip": {
+    "bytes": 2302771,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "3a33564a5677a4dad90b2513b07a81d8d55308318f9dcd6c8e80690a25c6b768"
+  },
+  "legacy_fut/deacot2025.zip": {
+    "bytes": 2392119,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "e5ae323dadda5ebbf69b6989af0d912fb1a4aebd954372f999eccb3a692352f9"
+  },
+  "legacy_fut/deacot2026.zip": {
+    "bytes": 2181536,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "a0fc2d7e780bfb730cfc3b9c80185527bc377e91be104563d86b6c5f6227e50f"
+  },
+  "legacy_futopt/deahistfo2004.zip": {
+    "bytes": 654434,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "16dd4a144078349c6430d44f426305b7a856f45efe0a155ec2eae4482459485f"
+  },
+  "legacy_futopt/deahistfo2005.zip": {
+    "bytes": 723861,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "b40d7bb7e549e500c6304cafbeabcdd3b567ad2e7e4db84c7f8994c4801b4798"
+  },
+  "legacy_futopt/deahistfo2006.zip": {
+    "bytes": 877200,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "109819c6a81398d8c8285f52db2fe43fdaa3a390ba387e3f0470255e3704cbc6"
+  },
+  "legacy_futopt/deahistfo2007.zip": {
+    "bytes": 875050,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "642e6613455e7c4f7647483c6388af4bfe7b1c419679294619737c01c99a9b6a"
+  },
+  "legacy_futopt/deahistfo2008.zip": {
+    "bytes": 931474,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "179e8a8e6e93c9f029ef78fa1179400382915be0e0247469b5a84be669275e83"
+  },
+  "legacy_futopt/deahistfo2009.zip": {
+    "bytes": 1006008,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "81a3dd0b4b2a577d51e9f4c0b77988903c79833d16e7f5f01b54f72745359e52"
+  },
+  "legacy_futopt/deahistfo2010.zip": {
+    "bytes": 1076547,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "fe9f778510fa9486302bf23e94ae670121577d79e3c379b2fe1d1583f1af4a51"
+  },
+  "legacy_futopt/deahistfo2011.zip": {
+    "bytes": 1099509,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "4f0c8e9f1f9f3957d5c226bc2e618ce9b75abc606e6c262ff7e144e355f04ab1"
+  },
+  "legacy_futopt/deahistfo2012.zip": {
+    "bytes": 1140086,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "e9d856340813517bf82b9ec8fa6c36d5a9c03667ee292d9884f2546d46b645d1"
+  },
+  "legacy_futopt/deahistfo2013.zip": {
+    "bytes": 1405307,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "3ebb89c28a19279bbab127b70911bd7f95924827bb5e671e7111329c400f270c"
+  },
+  "legacy_futopt/deahistfo2014.zip": {
+    "bytes": 1619136,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "4d14bce06afc6ce7f02c9e36cc680681f4c40c3c9cd700a7815d9134e6853afa"
+  },
+  "legacy_futopt/deahistfo2015.zip": {
+    "bytes": 1677604,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "85a8693faa969972ab8a38386caf95fb060f084d91c9e131e58ce987a5676025"
+  },
+  "legacy_futopt/deahistfo2016.zip": {
+    "bytes": 1780437,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "18ddbd7a65870f3deb4a9c38c218916f207f742e49f20c1f839f2a516c29a381"
+  },
+  "legacy_futopt/deahistfo2017.zip": {
+    "bytes": 1691344,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "810aa672585243f2f300adf6dffe3d38dfd5c016515420476d394bb88aeba0dc"
+  },
+  "legacy_futopt/deahistfo2018.zip": {
+    "bytes": 1964208,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "802da10d132f44827c29ed9b74a8cbb922da32b3548b89609390b1c6ce167a6d"
+  },
+  "legacy_futopt/deahistfo2019.zip": {
+    "bytes": 1961236,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "e006ba341bc529369aa74da67cefa53b0be6e723ada2d7472350cf014948d293"
+  },
+  "legacy_futopt/deahistfo2020.zip": {
+    "bytes": 1898698,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "a99dbf45ad2a552db2d18cd99c19a33481690ee99625b4cbba89cd7f48f697ba"
+  },
+  "legacy_futopt/deahistfo2021.zip": {
+    "bytes": 1939349,
+    "fetched_utc": "2026-11-08T10:21:52+00:00",
+    "sha256": "6dcdb1556d6318af68d67106d333a8d78adf7797b5092d36ab980bf2d931c17a"
+  },
+  "legacy_futopt/deahistfo2022.zip": {
+    "bytes": 2027966,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "b1fbbcd33f2cb79b4d25b1d172684eb88d5c45b88f1cf682e1cad8de10032c4d"
+  },
+  "legacy_futopt/deahistfo2023.zip": {
+    "bytes": 2159748,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "daee0cee7fbead2fe091f7da11e4ad0007d772adfb43c0d72c4c0e751886476a"
+  },
+  "legacy_futopt/deahistfo2024.zip": {
+    "bytes": 2352514,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "3542c0dc33450215f2b855bfe45a93c639e25cfa5ba58c561821c3e6bde633bf"
+  },
+  "legacy_futopt/deahistfo2025.zip": {
+    "bytes": 2454106,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "c9ec5dd8f6f302754486b3d0691115ab42c9f56398d4028cec20b48e94f72c04"
+  },
+  "legacy_futopt/deahistfo2026.zip": {
+    "bytes": 2249224,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "f8b0ea9fe59f820a4dd8a9f805062eff11b15d33d65dbe0bb6d3ed9643f0b2c3"
+  },
+  "legacy_futopt/deahistfo_1995_2016.zip": {
+    "bytes": 19261109,
+    "fetched_utc": "2026-11-08T10:21:48+00:00",
+    "sha256": "7ffdddca23ca86c7413c7b30b4eae5482cd1d07e79bd4a3d8f75d5cc6ae7a2ba"
+  },
+  "supplemental_cit/dea_cit_txt_2006.zip": {
+    "bytes": 84878,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "a3462b55cc90d3b28a36904c6d9c2951c4ac71416f4fd7d121e78e6dd4ea0572"
+  },
+  "supplemental_cit/dea_cit_txt_2006_2016.zip": {
+    "bytes": 916800,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "c63725be3415dcb71e80edf0c78a2dfd18d46762d7f266d0048194f300da66d5"
+  },
+  "supplemental_cit/dea_cit_txt_2007.zip": {
+    "bytes": 82530,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "bfcfcd79094e5570d58972b5361aee9487074d7e6d2802018f722019cd9392b0"
+  },
+  "supplemental_cit/dea_cit_txt_2008.zip": {
+    "bytes": 82196,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "9bd179a758c7d1b1bda05bd2d5122a94519e86b038f0c70a6a77c9916a9ec07e"
+  },
+  "supplemental_cit/dea_cit_txt_2009.zip": {
+    "bytes": 81369,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "019393d5a56d4bd8fba26fdec7a87e69ddb0cc8fe292e978b7c8abda3135c7c4"
+  },
+  "supplemental_cit/dea_cit_txt_2010.zip": {
+    "bytes": 82359,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "9e846764db79f21b5bd7b7ac014ab1ee186334c1512a1f903f518ea0fb944892"
+  },
+  "supplemental_cit/dea_cit_txt_2011.zip": {
+    "bytes": 82631,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "e4965cd5a308bd163bf8f12fce91342f3df1f404182daf6dc6868608ef95cf54"
+  },
+  "supplemental_cit/dea_cit_txt_2012.zip": {
+    "bytes": 84479,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "d0eee3998693e2f7603248d5651c86fb0715ad5aee2db575c1ba30c937f1abf9"
+  },
+  "supplemental_cit/dea_cit_txt_2013.zip": {
+    "bytes": 87943,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "5fa03ccca921f06ad36b2c066427c1547255ea3f6c10b0586f1bc7f98d46588d"
+  },
+  "supplemental_cit/dea_cit_txt_2014.zip": {
+    "bytes": 89447,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "5fc1225a657f512aa932908ddc4131284b69350b6fc9a94421aef9b43489f463"
+  },
+  "supplemental_cit/dea_cit_txt_2015.zip": {
+    "bytes": 91765,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "504bcff08e017ee59ec8e5ea386ce929962aea4ac088e416a66cbe51d3eef7a1"
+  },
+  "supplemental_cit/dea_cit_txt_2016.zip": {
+    "bytes": 92089,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "97c017245cae6cb87fccc12c647de27d5392b373d4bfabed1bc7a3b8dba144d9"
+  },
+  "supplemental_cit/dea_cit_txt_2017.zip": {
+    "bytes": 92576,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "ad3388e9b8ba73022502c4aad6f148567aff0ac4837b0bdc122ded338b1b3d50"
+  },
+  "supplemental_cit/dea_cit_txt_2018.zip": {
+    "bytes": 95111,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "4046e5ff6cbea22d76f7c04175afa5b2d2e931388cbb686199a9c74db609b52b"
+  },
+  "supplemental_cit/dea_cit_txt_2019.zip": {
+    "bytes": 93428,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "a8bed70d499697cee3e6c9e11b512a4464afe88505ebfcb0ad325b3373fefc04"
+  },
+  "supplemental_cit/dea_cit_txt_2020.zip": {
+    "bytes": 92964,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "1b08f9b78f6341e99adcfbf3f97f31f193d2207289363c716949657147a1cb94"
+  },
+  "supplemental_cit/dea_cit_txt_2021.zip": {
+    "bytes": 92192,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "be860e83e0733964b01bbe6aabceff8a832f9cfba7245d1dceed5d888c4d5e36"
+  },
+  "supplemental_cit/dea_cit_txt_2022.zip": {
+    "bytes": 92390,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "5faa48c2b3b8b712259db123e18b6f206c4deacf2234edd5b59791dfbb110075"
+  },
+  "supplemental_cit/dea_cit_txt_2023.zip": {
+    "bytes": 92666,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "ef4118f8afeb362e7432378ec1a23cc52d95faa925acfdbba7e13f4a7806d1a8"
+  },
+  "supplemental_cit/dea_cit_txt_2024.zip": {
+    "bytes": 94588,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "5940e20f3f839a1395d6a04b10aff66c7cbc0819af9ca8f8c731d1dd37261857"
+  },
+  "supplemental_cit/dea_cit_txt_2025.zip": {
+    "bytes": 92893,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "147589137c4c9a03da5bd5e467f44d41352c8f4375fdce3cf22872ee845bea1f"
+  },
+  "supplemental_cit/dea_cit_txt_2026.zip": {
+    "bytes": 79667,
+    "fetched_utc": "2026-11-08T10:21:53+00:00",
+    "sha256": "e5aca3bcd60084b358134cf97db40de8e815f4a9fc0cef9f53d03820e9834ef5"
+  },
+  "tff_fut/fut_fin_txt_2010.zip": {
+    "bytes": 148054,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "5392a28735d28dcb8feb5e60282c7c686759df9954699b5bcdadcd90db6d7fad"
+  },
+  "tff_fut/fut_fin_txt_2011.zip": {
+    "bytes": 336562,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "583a93474847f1070b213e2b12cfa73c48d9ba05f24f7d001a338de125468b57"
+  },
+  "tff_fut/fut_fin_txt_2012.zip": {
+    "bytes": 342397,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "c5b65a8c3e0f597fae6b41eaba9246e2a995b14de3aa8fd12aabee8d05032a58"
+  },
+  "tff_fut/fut_fin_txt_2013.zip": {
+    "bytes": 345146,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "682e643683c1ca36f723980544f4ff3bef7e0c3d299bc85c0904ef17b97f2780"
+  },
+  "tff_fut/fut_fin_txt_2014.zip": {
+    "bytes": 342379,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "83893048e9a73e8b6e81d9ef7a737f9f86db6bdc28f17d393b8df2e87ab713d6"
+  },
+  "tff_fut/fut_fin_txt_2015.zip": {
+    "bytes": 355771,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "a506b8ceb510fb49b8b21a1687fff35903698b8968d079b9e5f12ce92f96b68e"
+  },
+  "tff_fut/fut_fin_txt_2016.zip": {
+    "bytes": 365403,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "e8570bcd83df5c3e25aca61a59985001db83a8299a25943525c8d109ffc94a15"
+  },
+  "tff_fut/fut_fin_txt_2017.zip": {
+    "bytes": 395830,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "e6e2dd537efcc57cdd6cdcc4e45e567fd47e65d8afc8369d8383bf09195ae7f5"
+  },
+  "tff_fut/fut_fin_txt_2018.zip": {
+    "bytes": 458570,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "6843d130a25a17c6248df67463810f02077ef4eeafdd629299d21c18f5125e40"
+  },
+  "tff_fut/fut_fin_txt_2019.zip": {
+    "bytes": 454803,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "631b31880d513072aa50d63117c896184dd35db3cc8fcdd6debd80197ee7a661"
+  },
+  "tff_fut/fut_fin_txt_2020.zip": {
+    "bytes": 430721,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "c90d98d94db708772d669f263fb8061c75f8a7f681ba231fb21247e5c9798e6b"
+  },
+  "tff_fut/fut_fin_txt_2021.zip": {
+    "bytes": 466549,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "5c929991038c70ae2501661b6d442b9e784d3c29d3166ceac2e21b45ac93d56a"
+  },
+  "tff_fut/fut_fin_txt_2022.zip": {
+    "bytes": 494559,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "94c9c1fdee9dfbe377a09923ddfe26b88d3460605dd076081f221ad367d88601"
+  },
+  "tff_fut/fut_fin_txt_2023.zip": {
+    "bytes": 506931,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "43c3dbdd4d01fceefad5e457003751cdc0974c7cf46097b322e26e9e2fe44d7a"
+  },
+  "tff_fut/fut_fin_txt_2024.zip": {
+    "bytes": 563591,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "3f00585741a7cf76c207df640951d644dd91ff22a1106b38ca37a2469c765637"
+  },
+  "tff_fut/fut_fin_txt_2025.zip": {
+    "bytes": 627068,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "2ea0cda6395f7dd6501c27422be3763e1f2f5b41b768cfd36b871f092a07d438"
+  },
+  "tff_fut/fut_fin_txt_2026.zip": {
+    "bytes": 632015,
+    "fetched_utc": "2026-11-08T10:21:59+00:00",
+    "sha256": "89deacd0816c7ba75e838cba3d5b228796864077f7315a2d71ca7767a7e928ef"
+  },
+  "tff_futopt/com_fin_txt_2010.zip": {
+    "bytes": 150121,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "6e51d30bfef6ff73a4ac98d50a70c90e9968742e7f6efb2d7d726b9612add9cd"
+  },
+  "tff_futopt/com_fin_txt_2011.zip": {
+    "bytes": 340926,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "485b16e9c5b05342b87b0f72696eea9a5ff02e8e597baabaae4a92d39cc17bda"
+  },
+  "tff_futopt/com_fin_txt_2012.zip": {
+    "bytes": 346080,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "0daeddc4c42fcf41b872619f403fb4fa1314986126c0df7a3f328f35c29e7a2f"
+  },
+  "tff_futopt/com_fin_txt_2013.zip": {
+    "bytes": 348945,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "291d4e778af7f5787d28bb1de576f4409abe7d041d33916598ab870f93714bae"
+  },
+  "tff_futopt/com_fin_txt_2014.zip": {
+    "bytes": 346904,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "48feb455b3913177478ed387d0932c1e8394335a0a1a40d11e234d6b547f99f0"
+  },
+  "tff_futopt/com_fin_txt_2015.zip": {
+    "bytes": 359489,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "3a54e6b1d41b750f6f84710a3e5804cb8df8afd065be810fed524a4e5b63224f"
+  },
+  "tff_futopt/com_fin_txt_2016.zip": {
+    "bytes": 369573,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "f378d8bc31f43f507dedb1494aae15a7da59c7375aba904c345f49fc3d3125be"
+  },
+  "tff_futopt/com_fin_txt_2017.zip": {
+    "bytes": 399468,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "a5d91b5c2a30a19db5a293e7aa58c943058e765be9dee197a2fc18f83ee01c17"
+  },
+  "tff_futopt/com_fin_txt_2018.zip": {
+    "bytes": 462370,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "36db8de41d51d2519a3974d908cf3e3ce2fa4e83b52c562eb875506e3af13f7b"
+  },
+  "tff_futopt/com_fin_txt_2019.zip": {
+    "bytes": 460374,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "51e19f6ff5fd702e060860ea06a2633efade68e849819e3a1cec3ef07634ac2e"
+  },
+  "tff_futopt/com_fin_txt_2020.zip": {
+    "bytes": 437946,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "4c0f6b1580cbb329a4aec3e7adeb74d84fd8ecd65098754fa8ad39dd5b63b820"
+  },
+  "tff_futopt/com_fin_txt_2021.zip": {
+    "bytes": 473014,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "a1fee86c7e3fe7352e4ed12cf249a971aaa4543ebb089f47d4b60c80d14043bd"
+  },
+  "tff_futopt/com_fin_txt_2022.zip": {
+    "bytes": 498767,
+    "fetched_utc": "2026-11-08T10:22:02+00:00",
+    "sha256": "f18814368e50aed3d5c70537a934ae8c0daa0d80936855f733b0a44c72ae000f"
+  },
+  "tff_futopt/com_fin_txt_2023.zip": {
+    "bytes": 512075,
+    "fetched_utc": "2026-11-08T10:22:03+00:00",
+    "sha256": "05424d67195882efa87a0a4cd660860ad11f1233fe354ff830db063c2cb38043"
+  },
+  "tff_futopt/com_fin_txt_2024.zip": {
+    "bytes": 568886,
+    "fetched_utc": "2026-11-08T10:22:03+00:00",
+    "sha256": "334c39c9a55dac9f94632ed87a42df4a07f201db0de058363203da7861e00bf4"
+  },
+  "tff_futopt/com_fin_txt_2025.zip": {
+    "bytes": 632629,
+    "fetched_utc": "2026-11-08T10:22:03+00:00",
+    "sha256": "caf7af4b41588fc83b6b599874fc95247f6df6d9146ceae0a3709f2e5dcb403f"
+  },
+  "tff_futopt/com_fin_txt_2026.zip": {
+    "bytes": 637517,
+    "fetched_utc": "2026-11-08T10:22:03+00:00",
+    "sha256": "77c77b96e998c793029c4c74e14ca5bd458d2c4f37a3bf5f974ef16bca9415b7"
+  }
+}
