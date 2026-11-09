@@ -10,12 +10,12 @@ FINAL RULES (do not change unless Michael says so):
   minus thin products (THIN). No "Mine" column.
 - Index = (net - min)/(max - min)*100 over 26 or 52 weeks. Briese CoT Movement Index = Comm 26 now
   minus 6 weeks ago; |change| >= 40 -> "+" after the IBKR symbol (text only, no colour).
-- ORDER: (1) dark group: Comm 26 is 0 or 100 AND Large 26 and Small 26 are each 0 or 100 (extreme = rounds to 0 or 100);
-  (2) light group: Comm 26 is 0 or 100 but at least one spec is not; (3) everything else by
-  Comm 26 descending. Groups 1-2 sorted by |Comm 26| then |6-wk change|.
-- COLOUR: only the Market and IBKR cells, only when Comm 26 is 0 or 100: Comm 26 = 100 is
-  green, Comm 26 = 0 is red (by the index, NOT the net position); dark for group 1, light
-  for group 2. Nothing else in the table is coloured.
+- COLOUR: Market and IBKR cells are dark green if either Comm 26 or Comm 56 is >= 95
+  and both Large 26 and Small 26 are <= 5. They are dark red if either commercial index
+  is <= 5 and both spec indexes are >= 95. Otherwise, Comm 26 rounding to 100 or 0
+  gives light green or light red, respectively.
+- ORDER: dark rows first, then light rows, each sorted by |Comm 26| then |6-wk change|.
+  Uncoloured rows follow by Comm 26 descending.
 - SYMBOL MARKS: "+" = 40-pt move (text only); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
   ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
   actually net short; "&" = green and above the 20-day SMA, or red and below it.
@@ -232,14 +232,22 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
     ext = lambda v: v >= 99.5 or v < 0.5  # matches the rounded value shown in the table
     res = res.copy()
     res["name"] = res["name"].str.replace(r" - (CHICAGO|NEW YORK|ICE|COMMODITY|CBOE).*$", "", regex=True)
-    res["top"] = res.apply(lambda r: ext(r["comm_26"]) and ext(r["large_26"]) and ext(r["small_26"]), axis=1)
+    dark_green = (res["comm_26"].ge(95) | res["comm_56"].ge(95)) & (
+        res["large_26"].le(5) & res["small_26"].le(5)
+    )
+    dark_red = (res["comm_26"].le(5) | res["comm_56"].le(5)) & (
+        res["large_26"].ge(95) & res["small_26"].ge(95)
+    )
+    res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
+    res["top"] = dark_green | dark_red
+    res["green"] = dark_green | (~res["top"] & res["comm_26"].ge(99.5))
     res["plus"] = res["comm_26_move6"].abs() >= MOVE_THRESHOLD
     res["abs_comm"] = res["comm_26"].abs()
     res["abs_move"] = res["comm_26_move6"].abs()
-    res["c_ext"] = res["comm_26"].apply(ext)
+    res["coloured"] = res["top"] | res["comm_26"].apply(ext)
     top = res[res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
-    mid = res[res["c_ext"] & ~res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
-    rest = res[~res["c_ext"]].sort_values(["comm_26", "comm_26_move6"], ascending=False)
+    mid = res[res["coloured"] & ~res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
+    rest = res[~res["coloured"]].sort_values(["comm_26", "comm_26_move6"], ascending=False)
     res = pd.concat([top, mid, rest])
     heads = ["Market", "IBKR", "Comm 26", "Large 26", "Small 26", "Comm 26 chg (6 wk)",
              "Chg (6 wk) as of 6 wks ago",
@@ -250,8 +258,8 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
     rows = []
     for _, r in res.iterrows():
         style = ""
-        if r["c_ext"]:
-            lng = r["comm_26"] >= 99.5  # index 100 = green, index 0 = red
+        if r["coloured"]:
+            lng = r["green"]
             if r["top"]:
                 style = "background:#006100;color:#fff;font-weight:bold" if lng else "background:#c00000;color:#fff;font-weight:bold"
             else:
@@ -263,7 +271,7 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
             marks += "*"
         if (r["comm_26"] >= 99.5 and r["comm_net"] > 0) or (r["comm_26"] < 0.5 and r["comm_net"] < 0):
             marks += ">"
-        if r["c_ext"]:
+        if r["coloured"]:
             trend = sma20.get(PRICE_ROOTS.get(r["ibkr"], r["ibkr"]))
             if trend == ("above" if lng else "below"):
                 marks += "&amp;"
@@ -289,9 +297,10 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 </style></head><body>
 <h1>Legacy COT Index Report &mdash; liquid IBKR futures &mdash; as of {asof}</h1>
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
-<p><b>Top of the list:</b> Comm 26 at 0 or 100 and Large 26 and Small 26 both at 0 or 100 ({int(res['top'].sum())} today).
-<b>Market/IBKR colour (Comm 26 at 0 or 100):</b> Comm 26 = 100 is green, Comm 26 = 0 is red; dark = Large 26 and Small 26 also both at 0 or 100 (listed first), light = at least one spec is not (listed next).
-<b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
+<p><b>Dark green:</b> Comm 26 or Comm 56 &ge; 95, with Large 26 and Small 26 both &le; 5.
+<b>Dark red:</b> Comm 26 or Comm 56 &le; 5, with Large 26 and Small 26 both &ge; 95.
+Dark rows are listed first ({int(res['top'].sum())} today). Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.</p>
+<p><b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <p><b>&amp;</b> = green and above the 20-day simple moving average, or red and below it. {price_note}</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
@@ -306,7 +315,6 @@ def main(repo: str = None):
     latest = df["date"].max()
     res = build(df)
     res = res[(res["date"] == latest) & (res["oi"] >= MIN_OI) & (~res["ibkr"].isin(THIN))].copy()
-    res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
     asof = f"{latest:%Y-%m-%d}"
     # One fixed filename, overwritten every run, so reports never pile up. The date is inside the file.
     price_date, sma20 = load_sma20(repo_path, asof)
