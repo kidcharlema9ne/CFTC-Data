@@ -11,9 +11,9 @@ FINAL RULES (do not change unless Michael says so):
 - Index = (net - min)/(max - min)*100 over 26 or 52 weeks. Briese CoT Movement Index = Comm 26 now
   minus 6 weeks ago; |change| >= 40 -> "+" after the IBKR symbol (text only, no colour).
 - COLOUR: Market and IBKR cells are dark green if either Comm 26 or Comm 56 is >= 95
-  and both Large 26 and Small 26 are <= 5. They are dark red if either commercial index
-  is <= 5 and both spec indexes are >= 95. Otherwise, Comm 26 rounding to 100 or 0
-  gives light green or light red, respectively.
+  and either Large 26 or Large 52 is <= 5 and Small 26 is <= 5. They are dark red if
+  either commercial index is <= 5, either large spec index is >= 95, and Small 26 is >= 95.
+  Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.
 - ORDER: dark rows first, then light rows, each sorted by |Comm 26| then |6-wk change|.
   Uncoloured rows follow by Comm 26 descending.
 - SYMBOL MARKS: "+" = 40-pt move (text only); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
@@ -233,10 +233,10 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
     res = res.copy()
     res["name"] = res["name"].str.replace(r" - (CHICAGO|NEW YORK|ICE|COMMODITY|CBOE).*$", "", regex=True)
     dark_green = (res["comm_26"].ge(95) | res["comm_56"].ge(95)) & (
-        res["large_26"].le(5) & res["small_26"].le(5)
+        (res["large_26"].le(5) | res["large_52"].le(5)) & res["small_26"].le(5)
     )
     dark_red = (res["comm_26"].le(5) | res["comm_56"].le(5)) & (
-        res["large_26"].ge(95) & res["small_26"].ge(95)
+        (res["large_26"].ge(95) | res["large_52"].ge(95)) & res["small_26"].ge(95)
     )
     res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
     res["top"] = dark_green | dark_red
@@ -297,8 +297,8 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 </style></head><body>
 <h1>Legacy COT Index Report &mdash; liquid IBKR futures &mdash; as of {asof}</h1>
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
-<p><b>Dark green:</b> Comm 26 or Comm 56 &ge; 95, with Large 26 and Small 26 both &le; 5.
-<b>Dark red:</b> Comm 26 or Comm 56 &le; 5, with Large 26 and Small 26 both &ge; 95.
+<p><b>Dark green:</b> Comm 26 or Comm 56 &ge; 95, Large 26 or Large 52 &le; 5, and Small 26 &le; 5.
+<b>Dark red:</b> Comm 26 or Comm 56 &le; 5, Large 26 or Large 52 &ge; 95, and Small 26 &ge; 95.
 Dark rows are listed first ({int(res['top'].sum())} today). Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.</p>
 <p><b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <p><b>&amp;</b> = green and above the 20-day simple moving average, or red and below it. {price_note}</p>
