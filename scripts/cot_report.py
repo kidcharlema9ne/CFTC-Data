@@ -14,8 +14,9 @@ FINAL RULES (do not change unless Michael says so):
   and either Large 26 or Large 52 is <= 5 and Small 26 is <= 5. They are dark red if
   either commercial index is <= 5, either large spec index is >= 95, and Small 26 is >= 95.
   Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.
-- ORDER: dark rows first, then light rows, each sorted by |Comm 26| then |6-wk change|.
-  Uncoloured rows follow by Comm 26 descending.
+- ORDER: dark rows first, with a matching 100 or 0 on either commercial index at the
+  top of that group. Light rows follow. Within each group, sort by |Comm 26| then
+  |6-wk change|. Uncoloured rows follow by Comm 26 descending.
 - SYMBOL MARKS: "+" = 40-pt move (text only); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
   ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
   actually net short; "&" = green and above the 20-day SMA, or red and below it.
@@ -245,7 +246,14 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
     res["abs_comm"] = res["comm_26"].abs()
     res["abs_move"] = res["comm_26_move6"].abs()
     res["coloured"] = res["top"] | res["comm_26"].apply(ext)
-    top = res[res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
+    res["matching_comm_extreme"] = (
+        dark_green & (res["comm_26"].ge(99.5) | res["comm_56"].ge(99.5))
+    ) | (
+        dark_red & (res["comm_26"].lt(0.5) | res["comm_56"].lt(0.5))
+    )
+    top = res[res["top"]].sort_values(
+        ["matching_comm_extreme", "abs_comm", "abs_move"], ascending=False
+    )
     mid = res[res["coloured"] & ~res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
     rest = res[~res["coloured"]].sort_values(["comm_26", "comm_26_move6"], ascending=False)
     res = pd.concat([top, mid, rest])
@@ -299,7 +307,8 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
 <p><b>Dark green:</b> Comm 26 or Comm 56 &ge; 95, Large 26 or Large 52 &le; 5, and Small 26 &le; 5.
 <b>Dark red:</b> Comm 26 or Comm 56 &le; 5, Large 26 or Large 52 &ge; 95, and Small 26 &ge; 95.
-Dark rows are listed first ({int(res['top'].sum())} today). Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.</p>
+Dark rows are listed first ({int(res['top'].sum())} today), with a matching 100 (green) or 0 (red)
+on either commercial index at the top of that group. Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.</p>
 <p><b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <p><b>&amp;</b> = green and above the 20-day simple moving average, or red and below it. {price_note}</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
