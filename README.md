@@ -13,3 +13,6 @@ First run: Actions tab -> "Download CFTC COT data" -> Run workflow.
 
 ## Running the COT report
 See RUN_REPORT.md: `python3 scripts/cot_report.py` writes `reports/COT_Report_<date>.html`.
+
+## Futures PRICES live elsewhere
+Daily futures prices are NOT in this repo. They are in Michael's Cloudflare R2 bucket and are read through GitHub Actions in `kidcharlema9ne/insider-buying-research`. Start at [FUTURES_DATA.md](https://github.com/kidcharlema9ne/insider-buying-research/blob/main/FUTURES_DATA.md).
