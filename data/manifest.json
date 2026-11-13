@@ -76,12 +76,12 @@
   },
   "disagg_fut/fut_disagg_txt_2025.zip": {
     "bytes": 2420076,
-    "fetched_utc": "2026-11-12T02:24:29+00:00",
+    "fetched_utc": "2026-11-13T02:02:26+00:00",
     "sha256": "17ac2fef1b53303d01e486bbf5768a4e062308a3c34a2970871f3eab89829cbc"
   },
   "disagg_fut/fut_disagg_txt_2026.zip": {
     "bytes": 2127622,
-    "fetched_utc": "2026-11-12T02:24:29+00:00",
+    "fetched_utc": "2026-11-13T02:02:26+00:00",
     "sha256": "cde28aa12ccb8bc1ddcf73b3bdd6b92211c124322d38954e37e50e68483ef173"
   },
   "disagg_fut/fut_disagg_txt_hist_2006_2016.zip": {
@@ -166,12 +166,12 @@
   },
   "disagg_futopt/com_disagg_txt_2025.zip": {
     "bytes": 2498864,
-    "fetched_utc": "2026-11-12T02:24:32+00:00",
+    "fetched_utc": "2026-11-13T02:02:28+00:00",
     "sha256": "727c78bb431fea3994a4c73cebafd17e33e0ae83bea199a66ff65b742e9b25bc"
   },
   "disagg_futopt/com_disagg_txt_2026.zip": {
     "bytes": 2211351,
-    "fetched_utc": "2026-11-12T02:24:32+00:00",
+    "fetched_utc": "2026-11-13T02:02:28+00:00",
     "sha256": "33a130d9447ece7957be9e77351c8a82f92362417aaab2e095f276266672f3ed"
   },
   "disagg_futopt/com_disagg_txt_hist_2006_2016.zip": {
@@ -381,12 +381,12 @@
   },
   "legacy_fut/deacot2025.zip": {
     "bytes": 2392119,
-    "fetched_utc": "2026-11-12T02:24:24+00:00",
+    "fetched_utc": "2026-11-13T02:02:19+00:00",
     "sha256": "e5ae323dadda5ebbf69b6989af0d912fb1a4aebd954372f999eccb3a692352f9"
   },
   "legacy_fut/deacot2026.zip": {
     "bytes": 2181536,
-    "fetched_utc": "2026-11-12T02:24:24+00:00",
+    "fetched_utc": "2026-11-13T02:02:19+00:00",
     "sha256": "a0fc2d7e780bfb730cfc3b9c80185527bc377e91be104563d86b6c5f6227e50f"
   },
   "legacy_futopt/deahistfo2004.zip": {
@@ -496,12 +496,12 @@
   },
   "legacy_futopt/deahistfo2025.zip": {
     "bytes": 2454106,
-    "fetched_utc": "2026-11-12T02:24:27+00:00",
+    "fetched_utc": "2026-11-13T02:02:24+00:00",
     "sha256": "c9ec5dd8f6f302754486b3d0691115ab42c9f56398d4028cec20b48e94f72c04"
   },
   "legacy_futopt/deahistfo2026.zip": {
     "bytes": 2249224,
-    "fetched_utc": "2026-11-12T02:24:28+00:00",
+    "fetched_utc": "2026-11-13T02:02:25+00:00",
     "sha256": "f8b0ea9fe59f820a4dd8a9f805062eff11b15d33d65dbe0bb6d3ed9643f0b2c3"
   },
   "legacy_futopt/deahistfo_1995_2016.zip": {
@@ -611,12 +611,12 @@
   },
   "supplemental_cit/dea_cit_txt_2025.zip": {
     "bytes": 92893,
-    "fetched_utc": "2026-11-12T02:24:28+00:00",
+    "fetched_utc": "2026-11-13T02:02:25+00:00",
     "sha256": "147589137c4c9a03da5bd5e467f44d41352c8f4375fdce3cf22872ee845bea1f"
   },
   "supplemental_cit/dea_cit_txt_2026.zip": {
     "bytes": 79667,
-    "fetched_utc": "2026-11-12T02:24:28+00:00",
+    "fetched_utc": "2026-11-13T02:02:25+00:00",
     "sha256": "e5aca3bcd60084b358134cf97db40de8e815f4a9fc0cef9f53d03820e9834ef5"
   },
   "tff_fut/fin_fut_txt_2006_2016.zip": {
@@ -701,12 +701,12 @@
   },
   "tff_fut/fut_fin_txt_2025.zip": {
     "bytes": 627068,
-    "fetched_utc": "2026-11-12T02:24:33+00:00",
+    "fetched_utc": "2026-11-13T02:02:30+00:00",
     "sha256": "2ea0cda6395f7dd6501c27422be3763e1f2f5b41b768cfd36b871f092a07d438"
   },
   "tff_fut/fut_fin_txt_2026.zip": {
     "bytes": 632015,
-    "fetched_utc": "2026-11-12T02:24:34+00:00",
+    "fetched_utc": "2026-11-13T02:02:30+00:00",
     "sha256": "89deacd0816c7ba75e838cba3d5b228796864077f7315a2d71ca7767a7e928ef"
   },
   "tff_futopt/com_fin_txt_2010.zip": {
@@ -786,12 +786,12 @@
   },
   "tff_futopt/com_fin_txt_2025.zip": {
     "bytes": 632629,
-    "fetched_utc": "2026-11-12T02:24:35+00:00",
+    "fetched_utc": "2026-11-13T02:02:32+00:00",
     "sha256": "caf7af4b41588fc83b6b599874fc95247f6df6d9146ceae0a3709f2e5dcb403f"
   },
   "tff_futopt/com_fin_txt_2026.zip": {
     "bytes": 637517,
-    "fetched_utc": "2026-11-12T02:24:35+00:00",
+    "fetched_utc": "2026-11-13T02:02:32+00:00",
     "sha256": "77c77b96e998c793029c4c74e14ca5bd458d2c4f37a3bf5f974ef16bca9415b7"
   },
   "tff_futopt/fin_com_txt_2006_2016.zip": {
