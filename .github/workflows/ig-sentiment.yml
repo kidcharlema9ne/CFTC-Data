@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: ig-sentiment
@@ -49,7 +50,7 @@ jobs:
 
       - name: Scrape IG client sentiment
         if: steps.gate.outputs.go == 'true'
-        run: python scripts/ig_sentiment.py
+        run: python scripts/ig_sentiment.py --email-body /tmp/ig_email.md
 
       - name: Commit new data
         if: steps.gate.outputs.go == 'true'
@@ -65,3 +66,19 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           fi
+
+      - name: Email the report (GitHub emails the repo owner about this comment)
+        if: steps.gate.outputs.go == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="IG Bank Customer Positioning - daily report"
+          num=$(gh issue list --state open --search "$title in:title" --json number,title \
+                --jq "map(select(.title==\"$title\"))[0].number // empty")
+          if [ -z "$num" ]; then
+            num=$(gh issue create --title "$title" \
+                  --body "Daily report comments appear below. Each one emails @${{ github.repository_owner }}." \
+                  | grep -o '[0-9]*$')
+          fi
+          { echo "@${{ github.repository_owner }}"; echo; cat /tmp/ig_email.md; } > /tmp/ig_comment.md
+          gh issue comment "$num" --body-file /tmp/ig_comment.md

@@ -146,6 +146,7 @@ def write_csv(path, rows, append=False):
         w.writerows(rows)
 
 
+REPORT_URL = "https://github.com/kidcharlema9ne/cot-history/blob/main/reports/IG_Sentiment_latest.html"
 JUMP_POINTS = 10       # star the newest reading if it moved this many points or more
 HISTORY_COLUMNS = 20   # how many past readings the report shows per market
 
@@ -174,16 +175,55 @@ def shade(pct):
     return "#ffffff"
 
 
-def write_html(rows, stamp, history_path=None):
-    seen, series = load_history(history_path or OUT_DIR / "history.csv")
-    # Always show HISTORY_COLUMNS columns: the latest reading date, then the weekdays before it,
-    # newest first. A day with no saved reading shows "na".
+def date_grid(seen, stamp, count=HISTORY_COLUMNS):
+    """The latest reading date, then the weekdays before it, newest first."""
     latest = datetime.strptime(seen[-1] if seen else stamp[:10], "%Y-%m-%d").date()
     dates, day = [latest.isoformat()], latest
-    while len(dates) < HISTORY_COLUMNS:
+    while len(dates) < count:
         day -= timedelta(days=1)
         if day.weekday() < 5:
             dates.append(day.isoformat())
+    return dates
+
+
+def jumped(sym_series, dates, v):
+    """True if the newest reading moved JUMP_POINTS or more since the last earlier reading."""
+    earlier = [sym_series[x] for x in dates[1:] if x in sym_series]
+    return bool(earlier) and abs(v - earlier[0]) >= JUMP_POINTS
+
+
+def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=None):
+    """Compact markdown table for the daily GitHub email (issue comment)."""
+    seen, series = load_history(history_path or OUT_DIR / "history.csv")
+    dates = date_grid(seen, stamp, columns)
+    names = display_names()
+    out = ["## IG Bank Customer Positioning", "",
+           "**%% Long**  (🟩 70+ · 🟥 30 or less · * = moved %d+ points since last reading)" % JUMP_POINTS, "",
+           "| Market | " + " | ".join(d[5:7] + "/" + d[8:10] for d in dates) + " |",
+           "|:--|" + "|".join([":-:"] * len(dates)) + "|"]
+    current = None
+    for r in rows:
+        if r["group"] != current:
+            current = r["group"]
+            out.append("| **%s** |%s" % (current, " |" * len(dates)))
+        s = series.get(r["cot_symbol"], {})
+        cells = []
+        for i, d in enumerate(dates):
+            v = s.get(d)
+            if v is None:
+                cells.append("na")
+                continue
+            mark = "🟩" if v >= 70 else "🟥" if v <= 30 else ""
+            cells.append("%s%d%s" % (mark, v, "*" if i == 0 and jumped(s, dates, v) else ""))
+        out.append("| %s | %s |" % (names.get(r["cot_symbol"], r["cot_market"].title()), " | ".join(cells)))
+    if report_url:
+        out += ["", "[Full report (20 days)](%s)" % report_url]
+    Path(path).write_text("\n".join(out) + "\n", encoding="utf-8")
+
+
+def write_html(rows, stamp, history_path=None):
+    seen, series = load_history(history_path or OUT_DIR / "history.csv")
+    dates = date_grid(seen, stamp)
     names = display_names()
     head = "".join("<th class='n%s'>%s</th>" % (" now" if i == 0 else "",
                                                   d[5:7] + "/" + d[8:10])
@@ -202,10 +242,8 @@ def write_html(rows, stamp, history_path=None):
                 cells.append("<td class='%s dash'>na</td>" % cls)
             else:
                 star = ""
-                if i == 0:   # newest reading: star it if it moved 10+ points (up or down) since the last one
-                    earlier = [series[r["cot_symbol"]][x] for x in dates[1:] if x in series.get(r["cot_symbol"], {})]
-                    if earlier and abs(v - earlier[0]) >= JUMP_POINTS:
-                        star = "*"
+                if i == 0 and jumped(series.get(r["cot_symbol"], {}), dates, v):
+                    star = "*"
                 cells.append("<td class='%s' style='background:%s'>%d%s</td>" % (cls, shade(v), v, star))
         parts.append("<tr><td class='sym'>%s</td><td>%s</td>%s</tr>" % (
             html.escape(r["cot_symbol"]),
@@ -241,6 +279,9 @@ def main():
     if "--report-only" in sys.argv:   # rebuild the html from saved data, no scraping
         rows = rows_from_latest()
         write_html(rows, rows[0]["snapshot_utc"])
+        if "--email-body" in sys.argv:   # also write the markdown used for the daily email
+            write_markdown(rows, rows[0]["snapshot_utc"], sys.argv[sys.argv.index("--email-body") + 1],
+                           report_url=REPORT_URL)
         print("Report rebuilt from saved data.")
         return
     markets = load_markets()
@@ -262,6 +303,8 @@ def main():
     write_csv(OUT_DIR / "latest.csv", rows)
     write_csv(OUT_DIR / "history.csv", [r for r in rows if r["status"] == "ok"], append=True)
     write_html(rows, stamp)
+    if "--email-body" in sys.argv:
+        write_markdown(rows, stamp, sys.argv[sys.argv.index("--email-body") + 1], report_url=REPORT_URL)
     ok = sum(1 for r in rows if r["status"] == "ok")
     print(f"\nDone: {ok} markets with data, {len(failed)} failed, "
           f"{len(markets) - len(reachable)} not offered by IG.")
