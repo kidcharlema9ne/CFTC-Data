@@ -13,7 +13,7 @@ Reads   config/ig_markets.csv          (one row per COT market, with the IG page
 Writes  data/ig_sentiment/ig_sentiment_<date>.csv   dated snapshot
         data/ig_sentiment/latest.csv               newest snapshot (overwritten)
         data/ig_sentiment/history.csv              one row per market per run (appended)
-        reports/IG_Sentiment_latest.html           readable report: last 10 readings of percent long (overwritten)
+        reports/IG_Sentiment_latest.html           readable report: last 10 readings of percent long, newest first (overwritten)
 
 Notes
 - IG only shows the majority side ("76% are long"); the other side is 100 minus that.
@@ -174,7 +174,8 @@ def shade(pct):
 
 def write_html(rows, stamp, history_path=None):
     dates, series = load_history(history_path or OUT_DIR / "history.csv")
-    head = "".join("<th class='n%s'>%s</th>" % (" now" if i == len(dates) - 1 else "",
+    dates = dates[::-1]   # newest first, then working backwards
+    head = "".join("<th class='n%s'>%s</th>" % (" now" if i == 0 else "",
                                                   d[5:7] + "/" + d[8:10])
                    for i, d in enumerate(dates))
     width = 2 + max(len(dates), 1)
@@ -186,7 +187,7 @@ def write_html(rows, stamp, history_path=None):
         cells = []
         for i, d in enumerate(dates):
             v = series.get(r["cot_symbol"], {}).get(d)
-            cls = "n now" if i == len(dates) - 1 else "n"
+            cls = "n now" if i == 0 else "n"
             if v is None:
                 cells.append("<td class='%s dash'>-</td>" % cls)
             else:
@@ -198,12 +199,12 @@ def write_html(rows, stamp, history_path=None):
 <title>IG client sentiment</title>
 <style>body{{font:14px system-ui;margin:12px}}table{{border-collapse:collapse;width:100%}}
 td,th{{padding:4px 6px;border-bottom:1px solid #ddd;text-align:left;white-space:nowrap}}
-.n{{text-align:right;width:46px}}.now{{font-weight:700;border-left:2px solid #555}}.dash{{color:#bbb}}
+.n{{text-align:right;width:46px}}.now{{font-weight:700;border-right:2px solid #555}}.dash{{color:#bbb}}
 .sym{{font-weight:600}}.grp td{{background:#eef1f5;font-weight:600;padding-top:10px}}</style>
 <h2>IG client sentiment - COT markets</h2>
 <p>Percent of IG retail client <b>accounts that are long</b>, from the futures point of view
 (yen, Canadian dollar, Swiss franc, peso and real are flipped from IG's USD/X quotes). Last
-{len(dates)} reading(s), oldest to newest; the bold column is the latest ({stamp} UTC, {ok} of {len(rows)} markets).
+{len(dates)} reading(s), newest first and then working backwards; the bold column is the latest ({stamp} UTC, {ok} of {len(rows)} markets).
 Green = 60%+ long (dark 70%+), red = 40% or less long (dark 30% or less). 50 = even. Not COT data.</p>
 <table><tr><th>Symbol</th><th>Market</th>{head}</tr>
 {"".join(parts)}</table>"""
