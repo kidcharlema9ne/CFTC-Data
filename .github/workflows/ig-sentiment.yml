@@ -1,0 +1,42 @@
+name: IG client sentiment
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekday evenings after the US close. GitHub cron is UTC-only:
+    # 22:30 UTC = 5:30pm EST / 6:30pm EDT.
+    - cron: "30 22 * * 1-5"
+
+permissions:
+  contents: write
+
+jobs:
+  sentiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install headless browser
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Scrape IG client sentiment
+        run: python scripts/ig_sentiment.py
+
+      - name: Commit new data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ig_sentiment reports/IG_Sentiment_latest.html
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "IG sentiment $(date -u +%F)"
+            git push
+          fi
