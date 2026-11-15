@@ -165,15 +165,11 @@ def load_history(path):
 
 
 def shade(pct):
-    """Background colour: stronger green the more long, stronger red the more short."""
+    """Green only at 70% long or more, red only at 30% long or less, otherwise no colour."""
     if pct >= 70:
         return "#bfe3c8"
-    if pct >= 60:
-        return "#e3f2e7"
     if pct <= 30:
         return "#f3c9c6"
-    if pct <= 40:
-        return "#f9e4e2"
     return "#ffffff"
 
 
@@ -203,18 +199,15 @@ def write_html(rows, stamp, history_path=None):
             html.escape(names.get(r["cot_symbol"], r["cot_market"].title())), "".join(cells)))
     ok = sum(1 for r in rows if r["status"] == "ok")
     doc = f"""<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>IG client sentiment</title>
-<style>body{{font:13px system-ui;margin:10px}}.wrap{{overflow-x:auto}}
+<title>IG Bank Customer Positioning</title>
+<style>body{{font:13px system-ui;margin:10px}}.wrap{{overflow-x:auto}}h2{{margin:0 0 2px}}.sub{{font-weight:600;margin-bottom:6px}}
 table{{border-collapse:collapse;width:auto}}
 td,th{{padding:2px 4px;border-bottom:1px solid #e2e2e2;text-align:left;white-space:nowrap}}
 th{{font-size:11px;color:#444}}.n{{text-align:center;min-width:28px}}
 .now{{font-weight:700;border-right:2px solid #555}}.dash{{color:#bbb}}
 .sym{{font-weight:600;padding-right:6px}}.grp td{{background:#eef1f5;font-weight:600;padding-top:8px}}</style>
-<h2>IG client sentiment - COT markets</h2>
-<p>Percent of IG retail client <b>accounts that are long</b>, from the futures point of view
-(yen, Canadian dollar, Swiss franc, peso and real are flipped from IG's USD/X quotes). Last
-{len(dates)} reading(s), newest first and then working backwards; the bold column is the latest ({stamp} UTC, {ok} of {len(rows)} markets).
-Green = 60%+ long (dark 70%+), red = 40% or less long (dark 30% or less). 50 = even. Not COT data.</p>
+<h2>IG Bank Customer Positioning</h2>
+<div class="sub">% Long</div>
 <div class="wrap"><table><tr><th>Sym</th><th>Market</th>{head}</tr>
 {"".join(parts)}</table></div>"""
     REPORT.parent.mkdir(parents=True, exist_ok=True)
