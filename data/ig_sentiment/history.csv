@@ -1,0 +1,81 @@
+snapshot_utc,group,cot_symbol,cot_market,pct_long_futures_view,pct_short_futures_view,ig_pct_long_raw,ig_pct_short_raw,flipped,status,ig_url,note
+2026-11-15 19:19,Stock indexes,ES,E-MINI S&P 500,50,50,50,50,no,ok,https://www.ig.com/en/indices/markets-indices/us-spx-500,
+2026-11-15 19:19,Stock indexes,MES,MICRO E-MINI S&P 500 INDEX,50,50,50,50,no,ok,https://www.ig.com/en/indices/markets-indices/us-spx-500,same IG market as ES
+2026-11-15 19:19,Stock indexes,NQ,NASDAQ MINI,69,31,69,31,no,ok,https://www.ig.com/en/indices/markets-indices/us-tech-100,
+2026-11-15 19:19,Stock indexes,MNQ,MICRO E-MINI NASDAQ-100 INDEX,69,31,69,31,no,ok,https://www.ig.com/en/indices/markets-indices/us-tech-100,same IG market as NQ
+2026-11-15 19:19,Stock indexes,YM,DJIA x $5,49,51,49,51,no,ok,https://www.ig.com/en/indices/markets-indices/wall-street,
+2026-11-15 19:19,Stock indexes,RTY,RUSSELL E-MINI,68,32,68,32,no,ok,https://www.ig.com/en/indices/markets-indices/russell-2000,
+2026-11-15 19:19,Stock indexes,VX,VIX FUTURES,48,52,48,52,no,ok,https://www.ig.com/en/indices/markets-indices/volatility-index,"IG VIX is an undated CFD, rough match"
+2026-11-15 19:19,Interest rates,ZT,UST 2Y NOTE,68,32,68,32,no,ok,https://www.ig.com/en/bonds/markets-bonds/2-year-t-note-decimalised,
+2026-11-15 19:19,Interest rates,ZF,UST 5Y NOTE,69,31,69,31,no,ok,https://www.ig.com/en/bonds/markets-bonds/5-year-t-note-decimalised,
+2026-11-15 19:19,Interest rates,ZN,UST 10Y NOTE,71,29,71,29,no,ok,https://www.ig.com/en/bonds/markets-bonds/10-year-t-note-decimalised,
+2026-11-15 19:19,Interest rates,ZB,UST BOND,78,22,78,22,no,ok,https://www.ig.com/en/bonds/markets-bonds/treasury-bond-decimalised,
+2026-11-15 19:19,Currencies,DX,USD INDEX,51,49,51,49,no,ok,https://www.ig.com/en/commodities/markets-commodities/us-dollar-basket,IG US Dollar Basket
+2026-11-15 19:19,Currencies,6E,EURO FX,71,29,71,29,no,ok,https://www.ig.com/en/forex/markets-forex/eur-usd,
+2026-11-15 19:19,Currencies,6B,BRITISH POUND,68,32,68,32,no,ok,https://www.ig.com/en/forex/markets-forex/gbp-usd,
+2026-11-15 19:19,Currencies,6J,JAPANESE YEN,72,28,28,72,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-jpy,IG quotes USD/JPY
+2026-11-15 19:19,Currencies,6C,CANADIAN DOLLAR,66,34,34,66,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-cad,IG quotes USD/CAD
+2026-11-15 19:19,Currencies,6A,AUSTRALIAN DOLLAR,69,31,69,31,no,ok,https://www.ig.com/en/forex/markets-forex/aud-usd,
+2026-11-15 19:19,Currencies,6N,NZ DOLLAR,81,19,81,19,no,ok,https://www.ig.com/en/forex/markets-forex/nzd-usd,
+2026-11-15 19:19,Currencies,6S,SWISS FRANC,30,70,70,30,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-chf,IG quotes USD/CHF
+2026-11-15 19:19,Currencies,6M,MEXICAN PESO,72,28,28,72,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-mxn,IG quotes USD/MXN
+2026-11-15 19:19,Currencies,6L,BRAZILIAN REAL,96,4,4,96,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-brl,IG quotes USD/BRL
+2026-11-15 19:19,Energy,CL,WTI-PHYSICAL,53,47,53,47,no,ok,https://www.ig.com/en/commodities/markets-commodities/us-light-crude,
+2026-11-15 19:19,Energy,BZ,BRENT LAST DAY,50,50,50,50,no,ok,https://www.ig.com/en/commodities/markets-commodities/brent-crude,
+2026-11-15 19:19,Energy,NG,NAT GAS NYME,56,44,56,44,no,ok,https://www.ig.com/en/commodities/markets-commodities/natural-gas,
+2026-11-15 19:19,Energy,HO,NY HARBOR ULSD,52,48,52,48,no,ok,https://www.ig.com/en/commodities/markets-commodities/heating-oil,
+2026-11-15 19:19,Energy,RB,GASOLINE RBOB,65,35,65,35,no,ok,https://www.ig.com/en/commodities/markets-commodities/no-lead-gasoline,IG No Lead Gasoline
+2026-11-15 19:19,Commodities,GC,GOLD,87,13,87,13,no,ok,https://www.ig.com/en/commodities/markets-commodities/gold,
+2026-11-15 19:19,Commodities,SI,SILVER,90,10,90,10,no,ok,https://www.ig.com/en/commodities/markets-commodities/silver,
+2026-11-15 19:19,Commodities,PL,PLATINUM,86,14,86,14,no,ok,https://www.ig.com/en/commodities/markets-commodities/platinum,
+2026-11-15 19:19,Commodities,HG,COPPER- #1,67,33,67,33,no,ok,https://www.ig.com/en/commodities/markets-commodities/high-grade-copper,
+2026-11-15 19:19,Commodities,ZC,CORN,89,11,89,11,no,ok,https://www.ig.com/en/commodities/markets-commodities/corn,
+2026-11-15 19:19,Commodities,ZW,WHEAT-SRW,89,11,89,11,no,ok,https://www.ig.com/en/commodities/markets-commodities/chicago-wheat,IG Chicago Wheat
+2026-11-15 19:19,Commodities,ZS,SOYBEANS,92,8,92,8,no,ok,https://www.ig.com/en/commodities/markets-commodities/soyabeans,
+2026-11-15 19:19,Commodities,ZM,SOYBEAN MEAL,83,17,83,17,no,ok,https://www.ig.com/en/commodities/markets-commodities/soyabean-meal,
+2026-11-15 19:19,Commodities,ZL,SOYBEAN OIL,60,40,60,40,no,ok,https://www.ig.com/en/commodities/markets-commodities/soyabean-oil,
+2026-11-15 19:19,Commodities,KC,COFFEE C,71,29,71,29,no,ok,https://www.ig.com/en/commodities/markets-commodities/coffee-arabica,
+2026-11-15 19:19,Commodities,CC,COCOA,76,24,76,24,no,ok,https://www.ig.com/en/commodities/markets-commodities/new-york-cocoa,
+2026-11-15 19:19,Commodities,SB,SUGAR NO. 11,46,54,46,54,no,ok,https://www.ig.com/en/commodities/markets-commodities/new-york-sugar-no-11,
+2026-11-15 19:19,Commodities,CT,COTTON NO. 2,79,21,79,21,no,ok,https://www.ig.com/en/commodities/markets-commodities/new-york-cotton,
+2026-11-15 19:19,Commodities,LE,LIVE CATTLE,64,36,64,36,no,ok,https://www.ig.com/en/commodities/markets-commodities/live-cattle,
+2026-11-15 19:19,Commodities,HE,LEAN HOGS,83,17,83,17,no,ok,https://www.ig.com/en/commodities/markets-commodities/lean-hogs,
+2026-11-15 19:26,Stock indexes,ES,E-MINI S&P 500,50,50,50,50,no,ok,https://www.ig.com/en/indices/markets-indices/us-spx-500,
+2026-11-15 19:26,Stock indexes,NQ,NASDAQ MINI,69,31,69,31,no,ok,https://www.ig.com/en/indices/markets-indices/us-tech-100,
+2026-11-15 19:26,Stock indexes,YM,DJIA x $5,49,51,49,51,no,ok,https://www.ig.com/en/indices/markets-indices/wall-street,
+2026-11-15 19:26,Stock indexes,RTY,RUSSELL E-MINI,68,32,68,32,no,ok,https://www.ig.com/en/indices/markets-indices/russell-2000,
+2026-11-15 19:26,Stock indexes,VX,VIX FUTURES,48,52,48,52,no,ok,https://www.ig.com/en/indices/markets-indices/volatility-index,"IG VIX is an undated CFD, rough match"
+2026-11-15 19:26,Interest rates,ZT,UST 2Y NOTE,68,32,68,32,no,ok,https://www.ig.com/en/bonds/markets-bonds/2-year-t-note-decimalised,
+2026-11-15 19:26,Interest rates,ZF,UST 5Y NOTE,69,31,69,31,no,ok,https://www.ig.com/en/bonds/markets-bonds/5-year-t-note-decimalised,
+2026-11-15 19:26,Interest rates,ZN,UST 10Y NOTE,71,29,71,29,no,ok,https://www.ig.com/en/bonds/markets-bonds/10-year-t-note-decimalised,
+2026-11-15 19:26,Interest rates,ZB,UST BOND,78,22,78,22,no,ok,https://www.ig.com/en/bonds/markets-bonds/treasury-bond-decimalised,
+2026-11-15 19:26,Currencies,DX,USD INDEX,51,49,51,49,no,ok,https://www.ig.com/en/commodities/markets-commodities/us-dollar-basket,IG US Dollar Basket
+2026-11-15 19:26,Currencies,6E,EURO FX,71,29,71,29,no,ok,https://www.ig.com/en/forex/markets-forex/eur-usd,
+2026-11-15 19:26,Currencies,6B,BRITISH POUND,68,32,68,32,no,ok,https://www.ig.com/en/forex/markets-forex/gbp-usd,
+2026-11-15 19:26,Currencies,6J,JAPANESE YEN,72,28,28,72,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-jpy,IG quotes USD/JPY
+2026-11-15 19:26,Currencies,6C,CANADIAN DOLLAR,66,34,34,66,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-cad,IG quotes USD/CAD
+2026-11-15 19:26,Currencies,6A,AUSTRALIAN DOLLAR,69,31,69,31,no,ok,https://www.ig.com/en/forex/markets-forex/aud-usd,
+2026-11-15 19:26,Currencies,6N,NZ DOLLAR,81,19,81,19,no,ok,https://www.ig.com/en/forex/markets-forex/nzd-usd,
+2026-11-15 19:26,Currencies,6S,SWISS FRANC,30,70,70,30,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-chf,IG quotes USD/CHF
+2026-11-15 19:26,Currencies,6M,MEXICAN PESO,72,28,28,72,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-mxn,IG quotes USD/MXN
+2026-11-15 19:26,Currencies,6L,BRAZILIAN REAL,96,4,4,96,yes,ok,https://www.ig.com/en/forex/markets-forex/usd-brl,IG quotes USD/BRL
+2026-11-15 19:26,Energy,CL,WTI-PHYSICAL,53,47,53,47,no,ok,https://www.ig.com/en/commodities/markets-commodities/us-light-crude,
+2026-11-15 19:26,Energy,BZ,BRENT LAST DAY,50,50,50,50,no,ok,https://www.ig.com/en/commodities/markets-commodities/brent-crude,
+2026-11-15 19:26,Energy,NG,NAT GAS NYME,56,44,56,44,no,ok,https://www.ig.com/en/commodities/markets-commodities/natural-gas,
+2026-11-15 19:26,Energy,HO,NY HARBOR ULSD,52,48,52,48,no,ok,https://www.ig.com/en/commodities/markets-commodities/heating-oil,
+2026-11-15 19:26,Energy,RB,GASOLINE RBOB,65,35,65,35,no,ok,https://www.ig.com/en/commodities/markets-commodities/no-lead-gasoline,IG No Lead Gasoline
+2026-11-15 19:26,Commodities,GC,GOLD,87,13,87,13,no,ok,https://www.ig.com/en/commodities/markets-commodities/gold,
+2026-11-15 19:26,Commodities,SI,SILVER,90,10,90,10,no,ok,https://www.ig.com/en/commodities/markets-commodities/silver,
+2026-11-15 19:26,Commodities,PL,PLATINUM,86,14,86,14,no,ok,https://www.ig.com/en/commodities/markets-commodities/platinum,
+2026-11-15 19:26,Commodities,HG,COPPER- #1,67,33,67,33,no,ok,https://www.ig.com/en/commodities/markets-commodities/high-grade-copper,
+2026-11-15 19:26,Commodities,ZC,CORN,89,11,89,11,no,ok,https://www.ig.com/en/commodities/markets-commodities/corn,
+2026-11-15 19:26,Commodities,ZW,WHEAT-SRW,89,11,89,11,no,ok,https://www.ig.com/en/commodities/markets-commodities/chicago-wheat,IG Chicago Wheat
+2026-11-15 19:26,Commodities,ZS,SOYBEANS,92,8,92,8,no,ok,https://www.ig.com/en/commodities/markets-commodities/soyabeans,
+2026-11-15 19:26,Commodities,ZM,SOYBEAN MEAL,83,17,83,17,no,ok,https://www.ig.com/en/commodities/markets-commodities/soyabean-meal,
+2026-11-15 19:26,Commodities,ZL,SOYBEAN OIL,60,40,60,40,no,ok,https://www.ig.com/en/commodities/markets-commodities/soyabean-oil,
+2026-11-15 19:26,Commodities,KC,COFFEE C,71,29,71,29,no,ok,https://www.ig.com/en/commodities/markets-commodities/coffee-arabica,
+2026-11-15 19:26,Commodities,CC,COCOA,76,24,76,24,no,ok,https://www.ig.com/en/commodities/markets-commodities/new-york-cocoa,
+2026-11-15 19:26,Commodities,SB,SUGAR NO. 11,46,54,46,54,no,ok,https://www.ig.com/en/commodities/markets-commodities/new-york-sugar-no-11,
+2026-11-15 19:26,Commodities,CT,COTTON NO. 2,79,21,79,21,no,ok,https://www.ig.com/en/commodities/markets-commodities/new-york-cotton,
+2026-11-15 19:26,Commodities,LE,LIVE CATTLE,64,36,64,36,no,ok,https://www.ig.com/en/commodities/markets-commodities/live-cattle,
+2026-11-15 19:26,Commodities,HE,LEAN HOGS,83,17,83,17,no,ok,https://www.ig.com/en/commodities/markets-commodities/lean-hogs,

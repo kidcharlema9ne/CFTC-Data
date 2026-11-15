@@ -16,3 +16,6 @@ See RUN_REPORT.md: `python3 scripts/cot_report.py` writes `reports/COT_Report_<d
 
 ## Futures PRICES live elsewhere
 Daily futures prices are NOT in this repo. They are in Michael's Cloudflare R2 bucket and are read through GitHub Actions in `kidcharlema9ne/insider-buying-research`. Start at [FUTURES_DATA.md](https://github.com/kidcharlema9ne/insider-buying-research/blob/main/FUTURES_DATA.md).
+
+## IG client sentiment
+`scripts/ig_sentiment.py` reads IG's "% of client accounts long/short" for the report's markets (39 markets; list and IG page addresses in `config/ig_markets.csv`) and writes `data/ig_sentiment/` plus `reports/IG_Sentiment_latest.html`. Workflow: **IG client sentiment** (weekday evenings, or run it by hand). It uses a headless browser because IG draws the figure with JavaScript. If IG blocks GitHub's servers the run fails and commits nothing.
