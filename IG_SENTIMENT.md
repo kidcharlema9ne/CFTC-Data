@@ -15,7 +15,7 @@ It is not COT data. IG shows only the majority side; the other side is 100 minus
 | `data/ig_sentiment/history.csv` | **The history.** One row per market per run, appended every weekday. Use this for charts and trends. |
 | `data/ig_sentiment/latest.csv` | The newest snapshot (all 39 markets, overwritten each run). |
 | `data/ig_sentiment/ig_sentiment_YYYY-MM-DD.csv` | One snapshot file per day. |
-| `reports/IG_Sentiment_latest.html` | Readable report, grouped: stock indexes, interest rates, currencies, energy, commodities. |
+| `reports/IG_Sentiment_latest.html` | Readable report, grouped: stock indexes, interest rates, currencies, energy, commodities. Shows percent long for the last 10 readings (oldest to newest, latest in bold). `python3 scripts/ig_sentiment.py --report-only` rebuilds it from saved data without scraping. |
 | `config/ig_markets.csv` | The market list: COT symbol, IG page address, and whether the pair is flipped. |
 | `scripts/ig_sentiment.py` | The scraper (headless browser; IG draws the numbers with JavaScript). |
 | `.github/workflows/ig-sentiment.yml` | The weekday 4pm job. It can also be run by hand from the Actions tab. |

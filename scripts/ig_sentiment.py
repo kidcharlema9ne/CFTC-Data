@@ -3,6 +3,7 @@
 IG client-sentiment report for the 48 COT-report markets.
 
     python3 scripts/ig_sentiment.py            # from the repo root
+    python3 scripts/ig_sentiment.py --report-only   # rebuild the html from saved data, no scraping
 
 Opens each IG market page in a real (headless) Chromium browser, because IG draws the
 "NN% of client accounts are long/short" figure with JavaScript - a plain download never
@@ -12,7 +13,7 @@ Reads   config/ig_markets.csv          (one row per COT market, with the IG page
 Writes  data/ig_sentiment/ig_sentiment_<date>.csv   dated snapshot
         data/ig_sentiment/latest.csv               newest snapshot (overwritten)
         data/ig_sentiment/history.csv              one row per market per run (appended)
-        reports/IG_Sentiment_latest.html           readable report (overwritten)
+        reports/IG_Sentiment_latest.html           readable report: last 10 readings of percent long (overwritten)
 
 Notes
 - IG only shows the majority side ("76% are long"); the other side is 100 minus that.
@@ -140,42 +141,92 @@ def write_csv(path, rows, append=False):
         w.writerows(rows)
 
 
-def write_html(rows, stamp):
-    def cell(r):
-        if r["status"] != "ok":
-            return "<td colspan='3' class='na'>%s</td>" % html.escape(
-                r["note"] or r["status"].replace("_", " "))
-        lg = r["pct_long_futures_view"]
-        shade = "#1b7f3b" if lg >= 70 else "#b3261e" if lg <= 30 else "#555"
-        bar = ("<div class='bar'><span style='width:%d%%'></span></div>" % lg)
-        return ("<td class='n' style='color:%s'>%d%%</td><td class='n'>%d%%</td><td>%s</td>"
-                % (shade, lg, r["pct_short_futures_view"], bar))
+HISTORY_COLUMNS = 10   # how many past readings the report shows per market
+
+
+def load_history(path):
+    """Return (dates, series): the newest HISTORY_COLUMNS distinct dates (oldest first),
+    and series[symbol][date] = percent long. One reading per market per day (the latest)."""
+    series, dates = {}, set()
+    if path.exists():
+        with open(path, newline="") as f:
+            for r in csv.DictReader(f):
+                if r.get("status") != "ok" or r.get("pct_long_futures_view", "") == "":
+                    continue
+                day = r["snapshot_utc"][:10]
+                dates.add(day)
+                series.setdefault(r["cot_symbol"], {})[day] = int(r["pct_long_futures_view"])
+    return sorted(dates)[-HISTORY_COLUMNS:], series
+
+
+def shade(pct):
+    """Background colour: stronger green the more long, stronger red the more short."""
+    if pct >= 70:
+        return "#bfe3c8"
+    if pct >= 60:
+        return "#e3f2e7"
+    if pct <= 30:
+        return "#f3c9c6"
+    if pct <= 40:
+        return "#f9e4e2"
+    return "#ffffff"
+
+
+def write_html(rows, stamp, history_path=None):
+    dates, series = load_history(history_path or OUT_DIR / "history.csv")
+    head = "".join("<th class='n%s'>%s</th>" % (" now" if i == len(dates) - 1 else "",
+                                                  d[5:7] + "/" + d[8:10])
+                   for i, d in enumerate(dates))
+    width = 2 + max(len(dates), 1)
     parts, current = [], None
     for r in rows:   # rows are already in the order set by config/ig_markets.csv
         if r["group"] != current:
             current = r["group"]
-            parts.append("<tr class='grp'><td colspan='5'>%s</td></tr>" % html.escape(current))
-        parts.append("<tr><td>%s</td><td>%s</td>%s</tr>" % (
-            html.escape(r["cot_symbol"]), html.escape(r["cot_market"].title()), cell(r)))
-    body = "\n".join(parts)
+            parts.append("<tr class='grp'><td colspan='%d'>%s</td></tr>" % (width, html.escape(current)))
+        cells = []
+        for i, d in enumerate(dates):
+            v = series.get(r["cot_symbol"], {}).get(d)
+            cls = "n now" if i == len(dates) - 1 else "n"
+            if v is None:
+                cells.append("<td class='%s dash'>-</td>" % cls)
+            else:
+                cells.append("<td class='%s' style='background:%s'>%d</td>" % (cls, shade(v), v))
+        parts.append("<tr><td class='sym'>%s</td><td>%s</td>%s</tr>" % (
+            html.escape(r["cot_symbol"]), html.escape(r["cot_market"].title()), "".join(cells)))
     ok = sum(1 for r in rows if r["status"] == "ok")
     doc = f"""<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>IG client sentiment</title>
-<style>body{{font:15px system-ui;margin:16px}}table{{border-collapse:collapse;width:100%}}
-td,th{{padding:5px 8px;border-bottom:1px solid #ddd;text-align:left}}.n{{text-align:right}}
-.na{{color:#888;font-style:italic}}.grp td{{background:#eef1f5;font-weight:600;padding-top:10px}}.bar{{background:#f3c9c6;width:120px;height:10px}}
-.bar span{{display:block;background:#bfe3c8;height:10px}}</style>
+<style>body{{font:14px system-ui;margin:12px}}table{{border-collapse:collapse;width:100%}}
+td,th{{padding:4px 6px;border-bottom:1px solid #ddd;text-align:left;white-space:nowrap}}
+.n{{text-align:right;width:46px}}.now{{font-weight:700;border-left:2px solid #555}}.dash{{color:#bbb}}
+.sym{{font-weight:600}}.grp td{{background:#eef1f5;font-weight:600;padding-top:10px}}</style>
 <h2>IG client sentiment - COT markets</h2>
-<p>{ok} of {len(rows)} markets as of {stamp} UTC. Share of IG retail client <b>accounts</b>
-long or short, shown from the futures point of view (yen, Canadian dollar, Swiss franc, peso and real
-are flipped from IG's USD/X quotes). Green = 70%+ long, red = 30% or less. Not COT data.</p>
-<table><tr><th>Symbol</th><th>Market</th><th class="n">Long</th><th class="n">Short</th><th></th></tr>
-{body}</table>"""
+<p>Percent of IG retail client <b>accounts that are long</b>, from the futures point of view
+(yen, Canadian dollar, Swiss franc, peso and real are flipped from IG's USD/X quotes). Last
+{len(dates)} reading(s), oldest to newest; the bold column is the latest ({stamp} UTC, {ok} of {len(rows)} markets).
+Green = 60%+ long (dark 70%+), red = 40% or less long (dark 30% or less). 50 = even. Not COT data.</p>
+<table><tr><th>Symbol</th><th>Market</th>{head}</tr>
+{"".join(parts)}</table>"""
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text(doc, encoding="utf-8")
 
 
+def rows_from_latest():
+    """Rebuild rows from data/ig_sentiment/latest.csv (used by --report-only)."""
+    with open(OUT_DIR / "latest.csv", newline="") as f:
+        rows = list(csv.DictReader(f))
+    for r in rows:
+        for k in ("pct_long_futures_view", "pct_short_futures_view"):
+            r[k] = r[k] if r[k] == "" else int(r[k])
+    return rows
+
+
 def main():
+    if "--report-only" in sys.argv:   # rebuild the html from saved data, no scraping
+        rows = rows_from_latest()
+        write_html(rows, rows[0]["snapshot_utc"])
+        print("Report rebuilt from saved data.")
+        return
     markets = load_markets()
     results = scrape(markets)
     reachable = [s for s, (st, _) in results.items() if st != "no_ig_page"]
