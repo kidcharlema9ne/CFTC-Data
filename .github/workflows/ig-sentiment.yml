@@ -2,39 +2,57 @@ name: IG client sentiment
 
 on:
   workflow_dispatch:
-  # TEST MODE: runs when this branch is pushed, so no merge is needed.
-  # Remove this block when the test is done.
-  push:
-    branches: [ig-sentiment]
-    paths: ["scripts/ig_sentiment.py", "config/ig_markets.csv", ".github/workflows/ig-sentiment.yml"]
-  # Schedule is OFF for now. To turn it on, uncomment (GitHub cron is UTC-only:
-  # 22:30 UTC = 5:30pm EST / 6:30pm EDT):
-  # schedule:
-  #   - cron: "30 22 * * 1-5"
+  schedule:
+    # Every day at 4:00pm US Eastern. GitHub cron is UTC-only, so there are two entries;
+    # the gate step below lets only the one that is really 4pm Eastern do the work
+    # (21:00 UTC in winter / EST, 20:00 UTC in summer / EDT). GitHub can start scheduled
+    # jobs a few minutes late.
+    - cron: "0 20 * * *"
+    - cron: "0 21 * * *"
 
 permissions:
   contents: write
+
+concurrency:
+  group: ig-sentiment
+  cancel-in-progress: false
 
 jobs:
   sentiment:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Gate - only 4pm Eastern for scheduled runs
+        id: gate
+        run: |
+          hour=$(TZ=America/New_York date +%H)
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$hour" != "16" ]; then
+            echo "It is $hour:00 Eastern, not 4pm. Skipping."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'true'
 
       - uses: actions/setup-python@v5
+        if: steps.gate.outputs.go == 'true'
         with:
           python-version: "3.12"
 
       - name: Install headless browser
+        if: steps.gate.outputs.go == 'true'
         run: |
           pip install playwright
           playwright install --with-deps chromium
 
       - name: Scrape IG client sentiment
+        if: steps.gate.outputs.go == 'true'
         run: python scripts/ig_sentiment.py
 
       - name: Commit new data
+        if: steps.gate.outputs.go == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -43,5 +61,7 @@ jobs:
             echo "No changes."
           else
             git commit -m "IG sentiment $(date -u +%F)"
+            # the COT download job also pushes to this branch, so catch up first
+            git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
           fi
