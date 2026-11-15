@@ -2,10 +2,15 @@ name: IG client sentiment
 
 on:
   workflow_dispatch:
-  schedule:
-    # Weekday evenings after the US close. GitHub cron is UTC-only:
-    # 22:30 UTC = 5:30pm EST / 6:30pm EDT.
-    - cron: "30 22 * * 1-5"
+  # TEST MODE: runs when this branch is pushed, so no merge is needed.
+  # Remove this block when the test is done.
+  push:
+    branches: [ig-sentiment]
+    paths: ["scripts/ig_sentiment.py", "config/ig_markets.csv", ".github/workflows/ig-sentiment.yml"]
+  # Schedule is OFF for now. To turn it on, uncomment (GitHub cron is UTC-only:
+  # 22:30 UTC = 5:30pm EST / 6:30pm EDT):
+  # schedule:
+  #   - cron: "30 22 * * 1-5"
 
 permissions:
   contents: write

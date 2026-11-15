@@ -116,7 +116,7 @@ def build_rows(markets, results, stamp):
             ig_long, ig_short = payload
             fut_long, fut_short = to_futures_view(ig_long, ig_short, flip)
         rows.append({
-            "snapshot_utc": stamp, "cot_symbol": m["cot_symbol"], "cot_market": m["cot_market"],
+            "snapshot_utc": stamp, "group": m["group"], "cot_symbol": m["cot_symbol"], "cot_market": m["cot_market"],
             "pct_long_futures_view": fut_long, "pct_short_futures_view": fut_short,
             "ig_pct_long_raw": ig_long, "ig_pct_short_raw": ig_short,
             "flipped": "yes" if flip else "no", "status": status,
@@ -125,7 +125,7 @@ def build_rows(markets, results, stamp):
     return rows
 
 
-FIELDS = ["snapshot_utc", "cot_symbol", "cot_market", "pct_long_futures_view",
+FIELDS = ["snapshot_utc", "group", "cot_symbol", "cot_market", "pct_long_futures_view",
           "pct_short_futures_view", "ig_pct_long_raw", "ig_pct_short_raw", "flipped",
           "status", "ig_url", "note"]
 
@@ -150,18 +150,20 @@ def write_html(rows, stamp):
         bar = ("<div class='bar'><span style='width:%d%%'></span></div>" % lg)
         return ("<td class='n' style='color:%s'>%d%%</td><td class='n'>%d%%</td><td>%s</td>"
                 % (shade, lg, r["pct_short_futures_view"], bar))
-    body = "\n".join(
-        "<tr><td>%s</td><td>%s</td>%s</tr>" % (
-            html.escape(r["cot_symbol"]), html.escape(r["cot_market"].title()),
-            cell({**r, "pct_long_futures_view": r["pct_long_futures_view"],
-                  "pct_short_futures_view": r["pct_short_futures_view"]}))
-        for r in rows)
+    parts, current = [], None
+    for r in rows:   # rows are already in the order set by config/ig_markets.csv
+        if r["group"] != current:
+            current = r["group"]
+            parts.append("<tr class='grp'><td colspan='5'>%s</td></tr>" % html.escape(current))
+        parts.append("<tr><td>%s</td><td>%s</td>%s</tr>" % (
+            html.escape(r["cot_symbol"]), html.escape(r["cot_market"].title()), cell(r)))
+    body = "\n".join(parts)
     ok = sum(1 for r in rows if r["status"] == "ok")
     doc = f"""<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>IG client sentiment</title>
 <style>body{{font:15px system-ui;margin:16px}}table{{border-collapse:collapse;width:100%}}
 td,th{{padding:5px 8px;border-bottom:1px solid #ddd;text-align:left}}.n{{text-align:right}}
-.na{{color:#888;font-style:italic}}.bar{{background:#f3c9c6;width:120px;height:10px}}
+.na{{color:#888;font-style:italic}}.grp td{{background:#eef1f5;font-weight:600;padding-top:10px}}.bar{{background:#f3c9c6;width:120px;height:10px}}
 .bar span{{display:block;background:#bfe3c8;height:10px}}</style>
 <h2>IG client sentiment - COT markets</h2>
 <p>{ok} of {len(rows)} markets as of {stamp} UTC. Share of IG retail client <b>accounts</b>
