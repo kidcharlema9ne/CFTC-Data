@@ -3,12 +3,12 @@ name: IG client sentiment
 on:
   workflow_dispatch:
   schedule:
-    # Every day at 4:00pm US Eastern. GitHub cron is UTC-only, so there are two entries;
+    # Every weekday (Mon-Fri) at 4:00pm US Eastern. GitHub cron is UTC-only, so there are two entries;
     # the gate step below lets only the one that is really 4pm Eastern do the work
     # (21:00 UTC in winter / EST, 20:00 UTC in summer / EDT). GitHub can start scheduled
     # jobs a few minutes late.
-    - cron: "0 20 * * *"
-    - cron: "0 21 * * *"
+    - cron: "0 20 * * 1-5"
+    - cron: "0 21 * * 1-5"
 
 permissions:
   contents: write
