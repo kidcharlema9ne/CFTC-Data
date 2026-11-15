@@ -27,7 +27,7 @@ import csv
 import html
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -175,8 +175,15 @@ def shade(pct):
 
 
 def write_html(rows, stamp, history_path=None):
-    dates, series = load_history(history_path or OUT_DIR / "history.csv")
-    dates = dates[::-1]   # newest first, then working backwards
+    seen, series = load_history(history_path or OUT_DIR / "history.csv")
+    # Always show HISTORY_COLUMNS columns: the latest reading date, then the weekdays before it,
+    # newest first. A day with no saved reading shows "na".
+    latest = datetime.strptime(seen[-1] if seen else stamp[:10], "%Y-%m-%d").date()
+    dates, day = [latest.isoformat()], latest
+    while len(dates) < HISTORY_COLUMNS:
+        day -= timedelta(days=1)
+        if day.weekday() < 5:
+            dates.append(day.isoformat())
     names = display_names()
     head = "".join("<th class='n%s'>%s</th>" % (" now" if i == 0 else "",
                                                   d[5:7] + "/" + d[8:10])
@@ -192,7 +199,7 @@ def write_html(rows, stamp, history_path=None):
             v = series.get(r["cot_symbol"], {}).get(d)
             cls = "n now" if i == 0 else "n"
             if v is None:
-                cells.append("<td class='%s dash'>-</td>" % cls)
+                cells.append("<td class='%s dash'>na</td>" % cls)
             else:
                 star = ""
                 if i == 0:   # newest reading: star it if it moved 10+ points (up or down) since the last one
