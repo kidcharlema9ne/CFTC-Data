@@ -198,7 +198,7 @@ def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=No
     dates = date_grid(seen, stamp, columns)
     names = display_names()
     out = ["## IG Bank Customer Positioning", "",
-           "**%% Long**  (🟩 70+ · 🟥 30 or less · * = moved %d+ points since last reading)" % JUMP_POINTS, "",
+           "**%% Long**  (🟩 70+ · 🟥 30 or less · ⬜ in between · * = moved %d+ points since last reading)" % JUMP_POINTS, "",
            "| Market | " + " | ".join(d[5:7] + "/" + d[8:10] for d in dates) + " |",
            "|:--|" + "|".join([":-:"] * len(dates)) + "|"]
     current = None
@@ -213,7 +213,7 @@ def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=No
             if v is None:
                 cells.append("na")
                 continue
-            mark = "🟩" if v >= 70 else "🟥" if v <= 30 else ""
+            mark = "🟩" if v >= 70 else "🟥" if v <= 30 else "⬜"
             cells.append("%s%d%s" % (mark, v, "*" if i == 0 and jumped(s, dates, v) else ""))
         out.append("| %s | %s |" % (names.get(r["cot_symbol"], r["cot_market"].title()), " | ".join(cells)))
     if report_url:
