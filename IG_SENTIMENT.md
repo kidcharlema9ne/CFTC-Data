@@ -20,6 +20,16 @@ It is not COT data. IG shows only the majority side; the other side is 100 minus
 | `scripts/ig_sentiment.py` | The scraper (headless browser; IG draws the numbers with JavaScript). |
 | `.github/workflows/ig-sentiment.yml` | The weekday 4pm job. It can also be run by hand from the Actions tab. |
 
+## Running it on request ("run IG sentiment")
+- **To just read it:** open `reports/IG_Sentiment_latest.html` (or `.pdf`) and `data/ig_sentiment/history.csv`. No run needed.
+- **To get a fresh reading now:** start the workflow `IG client sentiment` (`ig-sentiment.yml`) on `main` with
+  `workflow_dispatch`, e.g. `gh api -X POST repos/kidcharlema9ne/cot-history/actions/workflows/ig-sentiment.yml/dispatches -f ref=main`.
+  It takes about 2 minutes, then emails the report. A hand run is a **one-off**: it writes `reports/IG_Sentiment_manual.html/.pdf`
+  and `data/ig_sentiment/manual_latest.csv`, and does **not** touch `history.csv` or the daily report.
+  Only add `-f 'inputs[save_to_history]=true'` if the user explicitly wants that reading saved to the history.
+- The official history is built only by the weekday 4pm Eastern scheduled run.
+- An assistant needs GitHub access to this repo with permission to run workflows. A read-only connection can read the files but cannot start a run.
+
 ## Reading the columns
 - `pct_long_futures_view` / `pct_short_futures_view` - **use these.** Long and short as seen from the futures contract.
 - `ig_pct_long_raw` / `ig_pct_short_raw` - IG's own figures for the page it quotes.

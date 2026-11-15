@@ -34,6 +34,7 @@ ROOT = Path(__file__).resolve().parent.parent
 MARKETS = ROOT / "config" / "ig_markets.csv"
 OUT_DIR = ROOT / "data" / "ig_sentiment"
 REPORT = ROOT / "reports" / "IG_Sentiment_latest.html"
+REPORT_MANUAL = ROOT / "reports" / "IG_Sentiment_manual.html"   # hand-run reports; never saved to history
 
 SENTIMENT_RE = re.compile(r"(\d{1,3})\s*%\s+of client accounts are\s+(long|short)", re.I)
 PAGE_TIMEOUT_MS = 45_000
@@ -175,6 +176,15 @@ def shade(pct):
     return "#ffffff"
 
 
+def overlay(seen, series, rows, stamp):
+    """Manual runs: show today's live reading in the report without saving it to history.csv."""
+    day = stamp[:10]
+    for r in rows:
+        if r["status"] == "ok" and r["pct_long_futures_view"] != "":
+            series.setdefault(r["cot_symbol"], {})[day] = int(r["pct_long_futures_view"])
+    return sorted(set(seen) | {day})[-HISTORY_COLUMNS:], series
+
+
 def date_grid(seen, stamp, count=HISTORY_COLUMNS):
     """The latest reading date, then the weekdays before it, newest first."""
     latest = datetime.strptime(seen[-1] if seen else stamp[:10], "%Y-%m-%d").date()
@@ -192,9 +202,11 @@ def jumped(sym_series, dates, v):
     return bool(earlier) and abs(v - earlier[0]) >= JUMP_POINTS
 
 
-def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=None):
+def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=None, manual=False):
     """Compact markdown table for the daily GitHub email (issue comment)."""
     seen, series = load_history(history_path or OUT_DIR / "history.csv")
+    if manual:
+        seen, series = overlay(seen, series, rows, stamp)
     dates = date_grid(seen, stamp, columns)
     names = display_names()
     out = ["## IG Bank Customer Positioning", "",
@@ -221,8 +233,10 @@ def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=No
     Path(path).write_text("\n".join(out) + "\n", encoding="utf-8")
 
 
-def write_html(rows, stamp, history_path=None):
+def write_html(rows, stamp, history_path=None, manual=False):
     seen, series = load_history(history_path or OUT_DIR / "history.csv")
+    if manual:
+        seen, series = overlay(seen, series, rows, stamp)
     dates = date_grid(seen, stamp)
     names = display_names()
     head = "".join("<th class='n%s'>%s</th>" % (" now" if i == 0 else "",
@@ -261,17 +275,18 @@ th{{font-size:11px;color:#444}}.n{{text-align:center;min-width:28px}}
 <div class="sub">% Long <span class="legend">&nbsp;* = moved {JUMP_POINTS}+ points since last reading</span></div>
 <div class="wrap"><table><tr><th>Sym</th><th>Market</th>{head}</tr>
 {"".join(parts)}</table></div>"""
-    REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text(doc, encoding="utf-8")
+    out = REPORT_MANUAL if manual else REPORT
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(doc, encoding="utf-8")
 
 
-def write_pdf(pdf_path):
+def write_pdf(pdf_path, html_path=REPORT):
     """Render the html report to a one-page PDF with headless Chromium (needs playwright)."""
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page()
-        pg.goto(REPORT.resolve().as_uri())
+        pg.goto(Path(html_path).resolve().as_uri())
         pg.pdf(path=str(pdf_path), format="Letter", landscape=False, print_background=True,
                margin={"top": "0.3in", "bottom": "0.3in", "left": "0.3in", "right": "0.3in"}, scale=0.8)
         b.close()
@@ -313,14 +328,20 @@ def main():
     for r in rows:   # numbers for the html builder
         for k in ("pct_long_futures_view", "pct_short_futures_view"):
             r[k] = r[k] if r[k] == "" else int(r[k])
-    write_csv(OUT_DIR / f"ig_sentiment_{now:%Y-%m-%d}.csv", rows)
-    write_csv(OUT_DIR / "latest.csv", rows)
-    write_csv(OUT_DIR / "history.csv", [r for r in rows if r["status"] == "ok"], append=True)
-    write_html(rows, stamp)
+    manual = "--manual" in sys.argv
+    if manual:   # hand-run: its own files; history.csv, latest.csv and the daily report are not touched
+        write_csv(OUT_DIR / "manual_latest.csv", rows)
+    else:
+        write_csv(OUT_DIR / f"ig_sentiment_{now:%Y-%m-%d}.csv", rows)
+        write_csv(OUT_DIR / "latest.csv", rows)
+        write_csv(OUT_DIR / "history.csv", [r for r in rows if r["status"] == "ok"], append=True)
+    write_html(rows, stamp, manual=manual)
+    page = REPORT_MANUAL if manual else REPORT
     if "--pdf" in sys.argv:
-        write_pdf(REPORT.with_suffix(".pdf"))
+        write_pdf(page.with_suffix(".pdf"), page)
     if "--email-body" in sys.argv:
-        write_markdown(rows, stamp, sys.argv[sys.argv.index("--email-body") + 1], report_url=REPORT_URL)
+        write_markdown(rows, stamp, sys.argv[sys.argv.index("--email-body") + 1],
+                       report_url=REPORT_URL.replace("_latest", "_manual") if manual else REPORT_URL, manual=manual)
     ok = sum(1 for r in rows if r["status"] == "ok")
     print(f"\nDone: {ok} markets with data, {len(failed)} failed, "
           f"{len(markets) - len(reachable)} not offered by IG.")
