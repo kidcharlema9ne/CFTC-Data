@@ -265,6 +265,18 @@ th{{font-size:11px;color:#444}}.n{{text-align:center;min-width:28px}}
     REPORT.write_text(doc, encoding="utf-8")
 
 
+def write_pdf(pdf_path):
+    """Render the html report to a one-page PDF with headless Chromium (needs playwright)."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page()
+        pg.goto(REPORT.resolve().as_uri())
+        pg.pdf(path=str(pdf_path), format="Letter", landscape=False, print_background=True,
+               margin={"top": "0.3in", "bottom": "0.3in", "left": "0.3in", "right": "0.3in"}, scale=0.8)
+        b.close()
+
+
 def rows_from_latest():
     """Rebuild rows from data/ig_sentiment/latest.csv (used by --report-only)."""
     with open(OUT_DIR / "latest.csv", newline="") as f:
@@ -282,6 +294,8 @@ def main():
         if "--email-body" in sys.argv:   # also write the markdown used for the daily email
             write_markdown(rows, rows[0]["snapshot_utc"], sys.argv[sys.argv.index("--email-body") + 1],
                            report_url=REPORT_URL)
+        if "--pdf" in sys.argv:
+            write_pdf(REPORT.with_suffix(".pdf"))
         print("Report rebuilt from saved data.")
         return
     markets = load_markets()
@@ -303,6 +317,8 @@ def main():
     write_csv(OUT_DIR / "latest.csv", rows)
     write_csv(OUT_DIR / "history.csv", [r for r in rows if r["status"] == "ok"], append=True)
     write_html(rows, stamp)
+    if "--pdf" in sys.argv:
+        write_pdf(REPORT.with_suffix(".pdf"))
     if "--email-body" in sys.argv:
         write_markdown(rows, stamp, sys.argv[sys.argv.index("--email-body") + 1], report_url=REPORT_URL)
     ok = sum(1 for r in rows if r["status"] == "ok")
