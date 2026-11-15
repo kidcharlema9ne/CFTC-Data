@@ -1,20 +1,13 @@
 group,cot_symbol,cot_market,ig_url,flip_to_match_futures,note
 Stock indexes,ES,E-MINI S&P 500,https://www.ig.com/en/indices/markets-indices/us-spx-500,0,
-Stock indexes,MES,MICRO E-MINI S&P 500 INDEX,https://www.ig.com/en/indices/markets-indices/us-spx-500,0,same IG market as ES
 Stock indexes,NQ,NASDAQ MINI,https://www.ig.com/en/indices/markets-indices/us-tech-100,0,
-Stock indexes,MNQ,MICRO E-MINI NASDAQ-100 INDEX,https://www.ig.com/en/indices/markets-indices/us-tech-100,0,same IG market as NQ
 Stock indexes,YM,DJIA x $5,https://www.ig.com/en/indices/markets-indices/wall-street,0,
 Stock indexes,RTY,RUSSELL E-MINI,https://www.ig.com/en/indices/markets-indices/russell-2000,0,
 Stock indexes,VX,VIX FUTURES,https://www.ig.com/en/indices/markets-indices/volatility-index,0,"IG VIX is an undated CFD, rough match"
 Interest rates,ZT,UST 2Y NOTE,https://www.ig.com/en/bonds/markets-bonds/2-year-t-note-decimalised,0,
 Interest rates,ZF,UST 5Y NOTE,https://www.ig.com/en/bonds/markets-bonds/5-year-t-note-decimalised,0,
 Interest rates,ZN,UST 10Y NOTE,https://www.ig.com/en/bonds/markets-bonds/10-year-t-note-decimalised,0,
-Interest rates,TN,ULTRA UST 10Y,,0,not offered by IG
 Interest rates,ZB,UST BOND,https://www.ig.com/en/bonds/markets-bonds/treasury-bond-decimalised,0,
-Interest rates,UB,ULTRA UST BOND,,0,not offered by IG
-Interest rates,ZQ,FED FUNDS,,0,not offered by IG
-Interest rates,SR1,SOFR-1M,,0,not offered by IG
-Interest rates,SR3,SOFR-3M,,0,not offered by IG as a public page (IG lists 3-Month SOFR only in its product tables); send address if you can see one
 Currencies,DX,USD INDEX,https://www.ig.com/en/commodities/markets-commodities/us-dollar-basket,0,IG US Dollar Basket
 Currencies,6E,EURO FX,https://www.ig.com/en/forex/markets-forex/eur-usd,0,
 Currencies,6B,BRITISH POUND,https://www.ig.com/en/forex/markets-forex/gbp-usd,0,
@@ -36,7 +29,6 @@ Commodities,PL,PLATINUM,https://www.ig.com/en/commodities/markets-commodities/pl
 Commodities,HG,COPPER- #1,https://www.ig.com/en/commodities/markets-commodities/high-grade-copper,0,
 Commodities,ZC,CORN,https://www.ig.com/en/commodities/markets-commodities/corn,0,
 Commodities,ZW,WHEAT-SRW,https://www.ig.com/en/commodities/markets-commodities/chicago-wheat,0,IG Chicago Wheat
-Commodities,KE,WHEAT-HRW,,0,IG lists no HRW wheat
 Commodities,ZS,SOYBEANS,https://www.ig.com/en/commodities/markets-commodities/soyabeans,0,
 Commodities,ZM,SOYBEAN MEAL,https://www.ig.com/en/commodities/markets-commodities/soyabean-meal,0,
 Commodities,ZL,SOYBEAN OIL,https://www.ig.com/en/commodities/markets-commodities/soyabean-oil,0,
@@ -46,4 +38,3 @@ Commodities,SB,SUGAR NO. 11,https://www.ig.com/en/commodities/markets-commoditie
 Commodities,CT,COTTON NO. 2,https://www.ig.com/en/commodities/markets-commodities/new-york-cotton,0,
 Commodities,LE,LIVE CATTLE,https://www.ig.com/en/commodities/markets-commodities/live-cattle,0,
 Commodities,HE,LEAN HOGS,https://www.ig.com/en/commodities/markets-commodities/lean-hogs,0,
-Commodities,GF,FEEDER CATTLE,,0,no IG page found
