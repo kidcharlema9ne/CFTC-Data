@@ -1,40 +1,40 @@
-group,cot_symbol,cot_market,ig_url,flip_to_match_futures,note
-Stock indexes,ES,E-MINI S&P 500,https://www.ig.com/en/indices/markets-indices/us-spx-500,0,
-Stock indexes,NQ,NASDAQ MINI,https://www.ig.com/en/indices/markets-indices/us-tech-100,0,
-Stock indexes,YM,DJIA x $5,https://www.ig.com/en/indices/markets-indices/wall-street,0,
-Stock indexes,RTY,RUSSELL E-MINI,https://www.ig.com/en/indices/markets-indices/russell-2000,0,
-Stock indexes,VX,VIX FUTURES,https://www.ig.com/en/indices/markets-indices/volatility-index,0,"IG VIX is an undated CFD, rough match"
-Interest rates,ZT,UST 2Y NOTE,https://www.ig.com/en/bonds/markets-bonds/2-year-t-note-decimalised,0,
-Interest rates,ZF,UST 5Y NOTE,https://www.ig.com/en/bonds/markets-bonds/5-year-t-note-decimalised,0,
-Interest rates,ZN,UST 10Y NOTE,https://www.ig.com/en/bonds/markets-bonds/10-year-t-note-decimalised,0,
-Interest rates,ZB,UST BOND,https://www.ig.com/en/bonds/markets-bonds/treasury-bond-decimalised,0,
-Currencies,DX,USD INDEX,https://www.ig.com/en/commodities/markets-commodities/us-dollar-basket,0,IG US Dollar Basket
-Currencies,6E,EURO FX,https://www.ig.com/en/forex/markets-forex/eur-usd,0,
-Currencies,6B,BRITISH POUND,https://www.ig.com/en/forex/markets-forex/gbp-usd,0,
-Currencies,6J,JAPANESE YEN,https://www.ig.com/en/forex/markets-forex/usd-jpy,1,IG quotes USD/JPY
-Currencies,6C,CANADIAN DOLLAR,https://www.ig.com/en/forex/markets-forex/usd-cad,1,IG quotes USD/CAD
-Currencies,6A,AUSTRALIAN DOLLAR,https://www.ig.com/en/forex/markets-forex/aud-usd,0,
-Currencies,6N,NZ DOLLAR,https://www.ig.com/en/forex/markets-forex/nzd-usd,0,
-Currencies,6S,SWISS FRANC,https://www.ig.com/en/forex/markets-forex/usd-chf,1,IG quotes USD/CHF
-Currencies,6M,MEXICAN PESO,https://www.ig.com/en/forex/markets-forex/usd-mxn,1,IG quotes USD/MXN
-Currencies,6L,BRAZILIAN REAL,https://www.ig.com/en/forex/markets-forex/usd-brl,1,IG quotes USD/BRL
-Energy,CL,WTI-PHYSICAL,https://www.ig.com/en/commodities/markets-commodities/us-light-crude,0,
-Energy,BZ,BRENT LAST DAY,https://www.ig.com/en/commodities/markets-commodities/brent-crude,0,
-Energy,NG,NAT GAS NYME,https://www.ig.com/en/commodities/markets-commodities/natural-gas,0,
-Energy,HO,NY HARBOR ULSD,https://www.ig.com/en/commodities/markets-commodities/heating-oil,0,
-Energy,RB,GASOLINE RBOB,https://www.ig.com/en/commodities/markets-commodities/no-lead-gasoline,0,IG No Lead Gasoline
-Commodities,GC,GOLD,https://www.ig.com/en/commodities/markets-commodities/gold,0,
-Commodities,SI,SILVER,https://www.ig.com/en/commodities/markets-commodities/silver,0,
-Commodities,PL,PLATINUM,https://www.ig.com/en/commodities/markets-commodities/platinum,0,
-Commodities,HG,COPPER- #1,https://www.ig.com/en/commodities/markets-commodities/high-grade-copper,0,
-Commodities,ZC,CORN,https://www.ig.com/en/commodities/markets-commodities/corn,0,
-Commodities,ZW,WHEAT-SRW,https://www.ig.com/en/commodities/markets-commodities/chicago-wheat,0,IG Chicago Wheat
-Commodities,ZS,SOYBEANS,https://www.ig.com/en/commodities/markets-commodities/soyabeans,0,
-Commodities,ZM,SOYBEAN MEAL,https://www.ig.com/en/commodities/markets-commodities/soyabean-meal,0,
-Commodities,ZL,SOYBEAN OIL,https://www.ig.com/en/commodities/markets-commodities/soyabean-oil,0,
-Commodities,KC,COFFEE C,https://www.ig.com/en/commodities/markets-commodities/coffee-arabica,0,
-Commodities,CC,COCOA,https://www.ig.com/en/commodities/markets-commodities/new-york-cocoa,0,
-Commodities,SB,SUGAR NO. 11,https://www.ig.com/en/commodities/markets-commodities/new-york-sugar-no-11,0,
-Commodities,CT,COTTON NO. 2,https://www.ig.com/en/commodities/markets-commodities/new-york-cotton,0,
-Commodities,LE,LIVE CATTLE,https://www.ig.com/en/commodities/markets-commodities/live-cattle,0,
-Commodities,HE,LEAN HOGS,https://www.ig.com/en/commodities/markets-commodities/lean-hogs,0,
+group,cot_symbol,cot_market,display_name,ig_url,flip_to_match_futures,note
+Stock indexes,ES,E-MINI S&P 500,S&P 500,https://www.ig.com/en/indices/markets-indices/us-spx-500,0,
+Stock indexes,NQ,NASDAQ MINI,Nasdaq 100,https://www.ig.com/en/indices/markets-indices/us-tech-100,0,
+Stock indexes,YM,DJIA x $5,Dow Jones,https://www.ig.com/en/indices/markets-indices/wall-street,0,
+Stock indexes,RTY,RUSSELL E-MINI,Russell 2000,https://www.ig.com/en/indices/markets-indices/russell-2000,0,
+Stock indexes,VX,VIX FUTURES,VIX,https://www.ig.com/en/indices/markets-indices/volatility-index,0,"IG VIX is an undated CFD, rough match"
+Interest rates,ZT,UST 2Y NOTE,2-Year T-Note,https://www.ig.com/en/bonds/markets-bonds/2-year-t-note-decimalised,0,
+Interest rates,ZF,UST 5Y NOTE,5-Year T-Note,https://www.ig.com/en/bonds/markets-bonds/5-year-t-note-decimalised,0,
+Interest rates,ZN,UST 10Y NOTE,10-Year T-Note,https://www.ig.com/en/bonds/markets-bonds/10-year-t-note-decimalised,0,
+Interest rates,ZB,UST BOND,Treasury Bond (30-Year),https://www.ig.com/en/bonds/markets-bonds/treasury-bond-decimalised,0,
+Currencies,DX,USD INDEX,US Dollar Index,https://www.ig.com/en/commodities/markets-commodities/us-dollar-basket,0,IG US Dollar Basket
+Currencies,6E,EURO FX,Euro,https://www.ig.com/en/forex/markets-forex/eur-usd,0,
+Currencies,6B,BRITISH POUND,British Pound,https://www.ig.com/en/forex/markets-forex/gbp-usd,0,
+Currencies,6J,JAPANESE YEN,Japanese Yen,https://www.ig.com/en/forex/markets-forex/usd-jpy,1,IG quotes USD/JPY
+Currencies,6C,CANADIAN DOLLAR,Canadian Dollar,https://www.ig.com/en/forex/markets-forex/usd-cad,1,IG quotes USD/CAD
+Currencies,6A,AUSTRALIAN DOLLAR,Australian Dollar,https://www.ig.com/en/forex/markets-forex/aud-usd,0,
+Currencies,6N,NZ DOLLAR,New Zealand Dollar,https://www.ig.com/en/forex/markets-forex/nzd-usd,0,
+Currencies,6S,SWISS FRANC,Swiss Franc,https://www.ig.com/en/forex/markets-forex/usd-chf,1,IG quotes USD/CHF
+Currencies,6M,MEXICAN PESO,Mexican Peso,https://www.ig.com/en/forex/markets-forex/usd-mxn,1,IG quotes USD/MXN
+Currencies,6L,BRAZILIAN REAL,Brazilian Real,https://www.ig.com/en/forex/markets-forex/usd-brl,1,IG quotes USD/BRL
+Energy,CL,WTI-PHYSICAL,Crude Oil (WTI),https://www.ig.com/en/commodities/markets-commodities/us-light-crude,0,
+Energy,BZ,BRENT LAST DAY,Brent Crude,https://www.ig.com/en/commodities/markets-commodities/brent-crude,0,
+Energy,NG,NAT GAS NYME,Natural Gas,https://www.ig.com/en/commodities/markets-commodities/natural-gas,0,
+Energy,HO,NY HARBOR ULSD,Heating Oil,https://www.ig.com/en/commodities/markets-commodities/heating-oil,0,
+Energy,RB,GASOLINE RBOB,Gasoline (RBOB),https://www.ig.com/en/commodities/markets-commodities/no-lead-gasoline,0,IG No Lead Gasoline
+Commodities,GC,GOLD,Gold,https://www.ig.com/en/commodities/markets-commodities/gold,0,
+Commodities,SI,SILVER,Silver,https://www.ig.com/en/commodities/markets-commodities/silver,0,
+Commodities,PL,PLATINUM,Platinum,https://www.ig.com/en/commodities/markets-commodities/platinum,0,
+Commodities,HG,COPPER- #1,Copper,https://www.ig.com/en/commodities/markets-commodities/high-grade-copper,0,
+Commodities,ZC,CORN,Corn,https://www.ig.com/en/commodities/markets-commodities/corn,0,
+Commodities,ZW,WHEAT-SRW,Wheat (Chicago),https://www.ig.com/en/commodities/markets-commodities/chicago-wheat,0,IG Chicago Wheat
+Commodities,ZS,SOYBEANS,Soybeans,https://www.ig.com/en/commodities/markets-commodities/soyabeans,0,
+Commodities,ZM,SOYBEAN MEAL,Soybean Meal,https://www.ig.com/en/commodities/markets-commodities/soyabean-meal,0,
+Commodities,ZL,SOYBEAN OIL,Soybean Oil,https://www.ig.com/en/commodities/markets-commodities/soyabean-oil,0,
+Commodities,KC,COFFEE C,Coffee,https://www.ig.com/en/commodities/markets-commodities/coffee-arabica,0,
+Commodities,CC,COCOA,Cocoa,https://www.ig.com/en/commodities/markets-commodities/new-york-cocoa,0,
+Commodities,SB,SUGAR NO. 11,Sugar,https://www.ig.com/en/commodities/markets-commodities/new-york-sugar-no-11,0,
+Commodities,CT,COTTON NO. 2,Cotton,https://www.ig.com/en/commodities/markets-commodities/new-york-cotton,0,
+Commodities,LE,LIVE CATTLE,Live Cattle,https://www.ig.com/en/commodities/markets-commodities/live-cattle,0,
+Commodities,HE,LEAN HOGS,Lean Hogs,https://www.ig.com/en/commodities/markets-commodities/lean-hogs,0,

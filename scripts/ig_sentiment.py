@@ -57,6 +57,11 @@ def to_futures_view(ig_long, ig_short, flip):
     return (ig_short, ig_long) if flip else (ig_long, ig_short)
 
 
+def display_names():
+    """Plain names for the report (config column display_name), keyed by COT symbol."""
+    return {m["cot_symbol"]: m.get("display_name") or m["cot_market"].title() for m in load_markets()}
+
+
 def load_markets():
     with open(MARKETS, newline="") as f:
         return list(csv.DictReader(f))
@@ -175,6 +180,7 @@ def shade(pct):
 def write_html(rows, stamp, history_path=None):
     dates, series = load_history(history_path or OUT_DIR / "history.csv")
     dates = dates[::-1]   # newest first, then working backwards
+    names = display_names()
     head = "".join("<th class='n%s'>%s</th>" % (" now" if i == 0 else "",
                                                   d[5:7] + "/" + d[8:10])
                    for i, d in enumerate(dates))
@@ -193,7 +199,8 @@ def write_html(rows, stamp, history_path=None):
             else:
                 cells.append("<td class='%s' style='background:%s'>%d</td>" % (cls, shade(v), v))
         parts.append("<tr><td class='sym'>%s</td><td>%s</td>%s</tr>" % (
-            html.escape(r["cot_symbol"]), html.escape(r["cot_market"].title()), "".join(cells)))
+            html.escape(r["cot_symbol"]),
+            html.escape(names.get(r["cot_symbol"], r["cot_market"].title())), "".join(cells)))
     ok = sum(1 for r in rows if r["status"] == "ok")
     doc = f"""<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>IG client sentiment</title>
