@@ -65,13 +65,15 @@ jobs:
           flag=""
           [ "${{ steps.gate.outputs.mode }}" = "manual" ] && flag="--manual"
           python scripts/ig_sentiment.py --email-body /tmp/ig_email.md --pdf $flag
+          # hand runs send no email: keep the table in the repo so an assistant can show it in the chat
+          [ "$flag" = "--manual" ] && cp /tmp/ig_email.md reports/IG_Sentiment_manual.md || true
 
       - name: Commit new data
         if: steps.gate.outputs.go == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ig_sentiment reports/IG_Sentiment_latest.html reports/IG_Sentiment_latest.pdf reports/IG_Sentiment_manual.html reports/IG_Sentiment_manual.pdf
+          git add data/ig_sentiment reports/IG_Sentiment_latest.html reports/IG_Sentiment_latest.pdf reports/IG_Sentiment_manual.html reports/IG_Sentiment_manual.pdf reports/IG_Sentiment_manual.md
           if git diff --cached --quiet; then
             echo "No changes."
           else
@@ -81,8 +83,8 @@ jobs:
             git push
           fi
 
-      - name: Email the report (GitHub emails the repo owner about this comment)
-        if: steps.gate.outputs.go == 'true'
+      - name: Email the report (daily runs only; GitHub emails the repo owner about this comment)
+        if: steps.gate.outputs.go == 'true' && steps.gate.outputs.mode == 'daily'
         env:
           GH_TOKEN: ${{ github.token }}
           MODE: ${{ steps.gate.outputs.mode }}

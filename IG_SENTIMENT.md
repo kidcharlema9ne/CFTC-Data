@@ -24,8 +24,8 @@ It is not COT data. IG shows only the majority side; the other side is 100 minus
 - **To just read it:** open `reports/IG_Sentiment_latest.html` (or `.pdf`) and `data/ig_sentiment/history.csv`. No run needed.
 - **To get a fresh reading now:** start the workflow `IG client sentiment` (`ig-sentiment.yml`) on `main` with
   `workflow_dispatch`, e.g. `gh api -X POST repos/kidcharlema9ne/cot-history/actions/workflows/ig-sentiment.yml/dispatches -f ref=main`.
-  It takes about 2 minutes, then emails the report. A hand run is a **one-off**: it writes `reports/IG_Sentiment_manual.html/.pdf`
-  and `data/ig_sentiment/manual_latest.csv`, and does **not** touch `history.csv` or the daily report.
+  It takes about 2 minutes. A hand run is a **one-off and sends NO email**: it writes `reports/IG_Sentiment_manual.md` (compact table with
+  the last 10 days - **show this in the chat**), `reports/IG_Sentiment_manual.html/.pdf` and `data/ig_sentiment/manual_latest.csv`, and does **not** touch `history.csv` or the daily report.
   Only add `-f 'inputs[save_to_history]=true'` if the user explicitly wants that reading saved to the history.
 - The official history is built only by the weekday 4pm Eastern scheduled run.
 - An assistant needs GitHub access to this repo with permission to run workflows. A read-only connection can read the files but cannot start a run.
