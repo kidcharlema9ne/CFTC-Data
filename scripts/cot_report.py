@@ -9,7 +9,7 @@ FINAL RULES (do not change unless Michael says so):
 - Only IBKR-tradable futures (IBKR map below), open interest >= 45,000 as a liquidity proxy,
   minus thin products (THIN). No "Mine" column.
 - Index = (net - min)/(max - min)*100 over 26 or 52 weeks. Briese CoT Movement Index = Comm 26 now
-  minus 6 weeks ago; |change| >= 40 -> "+" after the IBKR symbol (text only, no colour).
+  minus 6 weeks ago; "+" requires a green row with change >= 40 or a red row with change <= -40.
 - COLOUR: Market and IBKR cells are dark green if either Comm 26 or Comm 56 is >= 95
   and either Large 26 or Large 52 is <= 5 and Small 26 is <= 5. They are dark red if
   either commercial index is <= 5, either large spec index is >= 95, and Small 26 is >= 95.
@@ -17,7 +17,7 @@ FINAL RULES (do not change unless Michael says so):
 - ORDER: dark rows first, with a matching 100 or 0 on either commercial index at the
   top of that group. Light rows follow. Within each group, sort by |Comm 26| then
   |6-wk change|. Uncoloured rows follow by Comm 26 descending.
-- SYMBOL MARKS: "+" = 40-pt move (text only); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
+- SYMBOL MARKS: "+" = 40-pt move agreeing with row colour (none on uncoloured rows); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
   ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
   actually net short; "&" = green and above the 20-day SMA, or red and below it.
 - No Comm Net column.
@@ -242,10 +242,13 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
     res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
     res["top"] = dark_green | dark_red
     res["green"] = dark_green | (~res["top"] & res["comm_26"].ge(99.5))
-    res["plus"] = res["comm_26_move6"].abs() >= MOVE_THRESHOLD
     res["abs_comm"] = res["comm_26"].abs()
     res["abs_move"] = res["comm_26_move6"].abs()
     res["coloured"] = res["top"] | res["comm_26"].apply(ext)
+    res["plus"] = res["coloured"] & (
+        (res["green"] & res["comm_26_move6"].ge(MOVE_THRESHOLD))
+        | (~res["green"] & res["comm_26_move6"].le(-MOVE_THRESHOLD))
+    )
     res["matching_comm_extreme"] = (
         dark_green & (res["comm_26"].ge(99.5) | res["comm_56"].ge(99.5))
     ) | (
@@ -309,7 +312,7 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 <b>Dark red:</b> Comm 26 or Comm 56 &le; 5, Large 26 or Large 52 &ge; 95, and Small 26 &ge; 95.
 Dark rows are listed first ({int(res['top'].sum())} today), with a matching 100 (green) or 0 (red)
 on either commercial index at the top of that group. Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.</p>
-<p><b>+</b> after the symbol = Comm 26 moved 40+ points in 6 weeks. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
+<p><b>+</b> after the symbol = Comm 26 rose at least 40 points in 6 weeks for a green row, or fell at least 40 points for a red row; no + on uncoloured rows. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <p><b>&amp;</b> = green and above the 20-day simple moving average, or red and below it. {price_note}</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
