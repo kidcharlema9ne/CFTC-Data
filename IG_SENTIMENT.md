@@ -18,7 +18,7 @@ It is not COT data. IG shows only the majority side; the other side is 100 minus
 | `reports/IG_Sentiment_latest.html` | Readable report, grouped: stock indexes, interest rates, currencies, energy, commodities. Shows percent long for the last 20 readings (newest gets a * if it moved 10+ points since the previous reading) (newest first, then working backwards; latest in bold). `python3 scripts/ig_sentiment.py --report-only` rebuilds it from saved data without scraping. |
 | `config/ig_markets.csv` | The market list: COT symbol, COT name, plain display name used in the report, IG page address, and whether the pair is flipped. |
 | `scripts/ig_sentiment.py` | The scraper (headless browser; IG draws the numbers with JavaScript). |
-| `.github/workflows/ig-sentiment.yml` | The weekday 4pm job. It can also be run by hand from the Actions tab. |
+| `.github/workflows/ig-sentiment.yml` | The weekday job (4pm Eastern plus backup attempts to 7pm). It can also be run by hand from the Actions tab. |
 
 ## Running it on request ("run IG sentiment")
 - **To just read it:** open `reports/IG_Sentiment_latest.html` (or `.pdf`) and `data/ig_sentiment/history.csv`. No run needed.
@@ -27,7 +27,9 @@ It is not COT data. IG shows only the majority side; the other side is 100 minus
   It takes about 2 minutes. A hand run is a **one-off and sends NO email**: it writes `reports/IG_Sentiment_manual.md` (compact table with
   the last 10 days - **show this in the chat**), `reports/IG_Sentiment_manual.html/.pdf` and `data/ig_sentiment/manual_latest.csv`, and does **not** touch `history.csv` or the daily report.
   Only add `-f 'inputs[save_to_history]=true'` if the user explicitly wants that reading saved to the history.
-- The official history is built only by the weekday 4pm Eastern scheduled run.
+- The official history is built only by the weekday scheduled run (4pm Eastern, or a backup attempt later that evening).
+- **A run takes about 2 minutes. After starting one, WAIT until it shows `completed` and the newest date in `latest.csv` / the report is today before showing any numbers.** Reading the files too early shows the previous day.
+- The daily email is a NEW GitHub issue each weekday titled `IG Bank Customer Positioning - YYYY-MM-DD`, so each day's email has its own subject.
 - An assistant needs GitHub access to this repo with permission to run workflows. A read-only connection can read the files but cannot start a run.
 
 ## Reading the columns

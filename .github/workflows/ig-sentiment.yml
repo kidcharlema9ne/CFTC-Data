@@ -8,12 +8,14 @@ on:
         type: boolean
         default: false
   schedule:
-    # Every weekday (Mon-Fri) at 4:00pm US Eastern. GitHub cron is UTC-only, so there are two entries;
-    # the gate step below lets only the one that is really 4pm Eastern do the work
-    # (21:07 UTC in winter / EST, 20:07 UTC in summer / EDT; off the top of the hour because GitHub drops top-of-hour runs). GitHub can start scheduled
-    # jobs a few minutes late.
-    - cron: "7 20 * * 1-5"
-    - cron: "7 21 * * 1-5"
+    # Goal: one official reading every weekday, right after 4:00pm US Eastern.
+    # GitHub's scheduler is best-effort and sometimes silently drops or delays scheduled runs, so instead of
+    # one 4pm entry there are backup attempts every 30 minutes (at :07 and :37, off the top of the hour because
+    # GitHub drops top-of-hour runs) from 20:00-23:59 UTC. That covers 4pm-7pm Eastern in winter (EST, UTC-5)
+    # and in summer (EDT, UTC-4).
+    # Each attempt first checks: is it a weekday, is it 4pm Eastern or later, and has today's reading already
+    # been saved? If today is already done (or it is too early), the attempt stops in a few seconds.
+    - cron: "7,37 20-23 * * 1-5"
 
 permissions:
   contents: write
@@ -28,25 +30,39 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Gate - only 4pm Eastern for scheduled runs
+      - uses: actions/checkout@v4
+
+      - name: Gate - decide whether this run should do the work
         id: gate
         run: |
+          event="${{ github.event_name }}"
           hour=$(TZ=America/New_York date +%H)
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$hour" != "16" ]; then
-            echo "It is $hour:00 Eastern, not 4pm. Skipping."
-            echo "go=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "go=true" >> "$GITHUB_OUTPUT"
+          dow=$(TZ=America/New_York date +%u)   # 1=Mon ... 7=Sun
+          today=$(TZ=America/New_York date +%F)
+          go=true
+          if [ "$event" = "schedule" ]; then
+            if [ "$dow" -ge 6 ]; then
+              echo "Weekend in New York. Skipping."; go=false
+            elif [ $((10#$hour)) -lt 16 ]; then
+              echo "It is $hour:xx Eastern, before 4pm. Skipping."; go=false
+            else
+              # date (New York) of the newest saved reading in the history
+              last_utc=$(tail -n 1 data/ig_sentiment/history.csv | cut -d, -f1)
+              last_day=""
+              [ -n "$last_utc" ] && last_day=$(TZ=America/New_York date -d "$last_utc UTC" +%F 2>/dev/null || true)
+              if [ "$last_day" = "$today" ]; then
+                echo "Today's reading ($today) is already saved. Skipping."; go=false
+              fi
+            fi
           fi
-          # scheduled 4pm runs are the official daily reading; hand runs are one-offs unless told otherwise
-          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.save_to_history }}" = "true" ]; then
+          echo "go=$go" >> "$GITHUB_OUTPUT"
+          echo "today=$today" >> "$GITHUB_OUTPUT"
+          # scheduled runs are the official daily reading; hand runs are one-offs unless told otherwise
+          if [ "$event" = "schedule" ] || [ "${{ inputs.save_to_history }}" = "true" ]; then
             echo "mode=daily" >> "$GITHUB_OUTPUT"
           else
             echo "mode=manual" >> "$GITHUB_OUTPUT"
           fi
-
-      - uses: actions/checkout@v4
-        if: steps.gate.outputs.go == 'true'
 
       - uses: actions/setup-python@v5
         if: steps.gate.outputs.go == 'true'
@@ -83,21 +99,20 @@ jobs:
             git push
           fi
 
-      - name: Email the report (daily runs only; GitHub emails the repo owner about this comment)
+      - name: Email the report (daily runs only; a NEW issue each day so every email has its own subject)
         if: steps.gate.outputs.go == 'true' && steps.gate.outputs.mode == 'daily'
         env:
           GH_TOKEN: ${{ github.token }}
-          MODE: ${{ steps.gate.outputs.mode }}
+          TODAY: ${{ steps.gate.outputs.today }}
         run: |
           page=latest; note="(one page, full 20 days, shaded)"
-          if [ "$MODE" = "manual" ]; then page=manual; note="- MANUAL RUN, not saved to the daily history"; fi
-          title="IG Bank Customer Positioning - daily report"
-          num=$(gh issue list --state open --search "$title in:title" --json number,title \
+          title="IG Bank Customer Positioning - $TODAY"
+          { echo "@${{ github.repository_owner }}"; echo; echo "**[Open the PDF report](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/reports/IG_Sentiment_${page}.pdf)** $note"; echo; cat /tmp/ig_email.md; } > /tmp/ig_comment.md
+          # a new issue each day = a new email thread. If this exact day already has an issue (a re-run), comment on it instead.
+          num=$(gh issue list --state all --search "\"$title\" in:title" --json number,title \
                 --jq "map(select(.title==\"$title\"))[0].number // empty")
           if [ -z "$num" ]; then
-            num=$(gh issue create --title "$title" \
-                  --body "Daily report comments appear below. Each one emails @${{ github.repository_owner }}." \
-                  | grep -o '[0-9]*$')
+            gh issue create --title "$title" --body-file /tmp/ig_comment.md
+          else
+            gh issue comment "$num" --body-file /tmp/ig_comment.md
           fi
-          { echo "@${{ github.repository_owner }}"; echo; echo "**[Open the PDF report](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/reports/IG_Sentiment_${page}.pdf)** $note"; echo; cat /tmp/ig_email.md; } > /tmp/ig_comment.md
-          gh issue comment "$num" --body-file /tmp/ig_comment.md
