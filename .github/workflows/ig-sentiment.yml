@@ -7,6 +7,10 @@ on:
         description: "Save this run to the daily history? (leave off for a one-off look)"
         type: boolean
         default: false
+      only_if_not_done:
+        description: "Official daily run for an outside timer (cron-job.org): saves to history and emails, but does nothing if today's reading is already saved"
+        type: boolean
+        default: false
   schedule:
     # Goal: one official reading every weekday, right after 4:00pm US Eastern.
     # GitHub's scheduler is best-effort and sometimes silently drops or delays scheduled runs, so instead of
@@ -36,11 +40,13 @@ jobs:
         id: gate
         run: |
           event="${{ github.event_name }}"
+          guarded=false
+          if [ "$event" = "schedule" ] || [ "${{ inputs.only_if_not_done }}" = "true" ]; then guarded=true; fi
           hour=$(TZ=America/New_York date +%H)
           dow=$(TZ=America/New_York date +%u)   # 1=Mon ... 7=Sun
           today=$(TZ=America/New_York date +%F)
           go=true
-          if [ "$event" = "schedule" ]; then
+          if [ "$guarded" = "true" ]; then
             if [ "$dow" -ge 6 ]; then
               echo "Weekend in New York. Skipping."; go=false
             elif [ $((10#$hour)) -lt 16 ]; then
@@ -58,7 +64,7 @@ jobs:
           echo "go=$go" >> "$GITHUB_OUTPUT"
           echo "today=$today" >> "$GITHUB_OUTPUT"
           # scheduled runs are the official daily reading; hand runs are one-offs unless told otherwise
-          if [ "$event" = "schedule" ] || [ "${{ inputs.save_to_history }}" = "true" ]; then
+          if [ "$guarded" = "true" ] || [ "${{ inputs.save_to_history }}" = "true" ]; then
             echo "mode=daily" >> "$GITHUB_OUTPUT"
           else
             echo "mode=manual" >> "$GITHUB_OUTPUT"
