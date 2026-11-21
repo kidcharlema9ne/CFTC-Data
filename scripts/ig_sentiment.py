@@ -150,6 +150,8 @@ def write_csv(path, rows, append=False):
 REPORT_URL = "https://github.com/kidcharlema9ne/cot-history/blob/main/reports/IG_Sentiment_latest.html"
 JUMP_POINTS = 10       # star the newest reading if it moved this many points or more
 HISTORY_COLUMNS = 20   # how many past readings the report shows per market
+PERCENTILE_DAYS = 91   # "3M": the newest reading is ranked against this many calendar days (about 3 months)
+PERCENTILE_MIN_READINGS = 20   # show "na" until a market has this many readings in the window (about a month of weekdays)
 
 
 def load_history(path):
@@ -196,6 +198,23 @@ def date_grid(seen, stamp, count=HISTORY_COLUMNS):
     return dates
 
 
+def percentile_3m(sym_series, latest_day):
+    """Where the newest reading ranks among that market's own readings from the last ~3 months.
+    0 = lowest of the window, 100 = highest. Ties count half (mid-rank), because the readings are whole numbers
+    and ties are common. Returns None (shown as "na") if there is no newest reading or too little history."""
+    v = sym_series.get(latest_day)
+    if v is None:
+        return None
+    latest = datetime.strptime(latest_day, "%Y-%m-%d").date()
+    start = (latest - timedelta(days=PERCENTILE_DAYS)).isoformat()
+    window = [x for d, x in sym_series.items() if start < d <= latest_day]
+    if len(window) < PERCENTILE_MIN_READINGS:
+        return None
+    below = sum(1 for x in window if x < v)
+    equal = sum(1 for x in window if x == v)
+    return int(round(100.0 * (below + 0.5 * equal) / len(window)))
+
+
 def jumped(sym_series, dates, v):
     """True if the newest reading moved JUMP_POINTS or more since the last earlier reading."""
     earlier = [sym_series[x] for x in dates[1:] if x in sym_series]
@@ -210,14 +229,14 @@ def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=No
     dates = date_grid(seen, stamp, columns)
     names = display_names()
     out = ["## IG Bank Customer Positioning", "",
-           "**%% Long**  (🟩 70+ · 🟥 30 or less · ⬜ in between · * = moved %d+ points since last reading)" % JUMP_POINTS, "",
-           "| Market | " + " | ".join(d[5:7] + "/" + d[8:10] for d in dates) + " |",
-           "|:--|" + "|".join([":-:"] * len(dates)) + "|"]
+           "**%% Long**  (🟩 70+ · 🟥 30 or less · ⬜ in between · * = moved %d+ points since last reading · 3M %% = newest reading's rank within the last 3 months, 0 lowest, 100 highest)" % JUMP_POINTS, "",
+           "| Market | " + " | ".join([dates[0][5:7] + "/" + dates[0][8:10], "3M %"] + [d[5:7] + "/" + d[8:10] for d in dates[1:]]) + " |",
+           "|:--|" + "|".join([":-:"] * (len(dates) + 1)) + "|"]
     current = None
     for r in rows:
         if r["group"] != current:
             current = r["group"]
-            out.append("| **%s** |%s" % (current, " |" * len(dates)))
+            out.append("| **%s** |%s" % (current, " |" * (len(dates) + 1)))
         s = series.get(r["cot_symbol"], {})
         cells = []
         for i, d in enumerate(dates):
@@ -227,6 +246,8 @@ def write_markdown(rows, stamp, path, columns=10, report_url="", history_path=No
                 continue
             mark = "🟩" if v >= 70 else "🟥" if v <= 30 else "⬜"
             cells.append("%s%d%s" % (mark, v, "*" if i == 0 and jumped(s, dates, v) else ""))
+        pct3 = percentile_3m(s, dates[0])
+        cells.insert(1, "na" if pct3 is None else str(pct3))
         out.append("| %s | %s |" % (names.get(r["cot_symbol"], r["cot_market"].title()), " | ".join(cells)))
     if report_url:
         out += ["", "[Full report (20 days)](%s)" % report_url]
@@ -242,7 +263,8 @@ def write_html(rows, stamp, history_path=None, manual=False):
     head = "".join("<th class='n%s'>%s</th>" % (" now" if i == 0 else "",
                                                   d[5:7] + "/" + d[8:10])
                    for i, d in enumerate(dates))
-    width = 2 + max(len(dates), 1)
+    head = head.replace("</th>", "</th><th class='n pct'>3M %</th>", 1)   # right after the newest date
+    width = 3 + max(len(dates), 1)
     parts, current = [], None
     for r in rows:   # rows are already in the order set by config/ig_markets.csv
         if r["group"] != current:
@@ -259,6 +281,9 @@ def write_html(rows, stamp, history_path=None, manual=False):
                 if i == 0 and jumped(series.get(r["cot_symbol"], {}), dates, v):
                     star = "*"
                 cells.append("<td class='%s' style='background:%s'>%d%s</td>" % (cls, shade(v), v, star))
+        pct3 = percentile_3m(series.get(r["cot_symbol"], {}), dates[0])
+        pct_cell = "<td class='n pct%s'>%s</td>" % (" dash" if pct3 is None else "", "na" if pct3 is None else pct3)
+        cells.insert(1, pct_cell)
         parts.append("<tr><td class='sym'>%s</td><td>%s</td>%s</tr>" % (
             html.escape(r["cot_symbol"]),
             html.escape(names.get(r["cot_symbol"], r["cot_market"].title())), "".join(cells)))
@@ -269,10 +294,10 @@ def write_html(rows, stamp, history_path=None, manual=False):
 table{{border-collapse:collapse;width:auto}}
 td,th{{padding:2px 4px;border-bottom:1px solid #e2e2e2;text-align:left;white-space:nowrap}}
 th{{font-size:11px;color:#444}}.n{{text-align:center;min-width:28px}}
-.now{{font-weight:700;border-right:2px solid #555}}.dash{{color:#bbb}}
+.now{{font-weight:700}}.pct{{border-right:2px solid #555;color:#333}}.dash{{color:#bbb}}
 .sym{{font-weight:600;padding-right:6px}}.grp td{{background:#eef1f5;font-weight:600;padding-top:8px}}</style>
 <h2>IG Bank Customer Positioning</h2>
-<div class="sub">% Long <span class="legend">&nbsp;* = moved {JUMP_POINTS}+ points since last reading</span></div>
+<div class="sub">% Long <span class="legend">&nbsp;* = moved {JUMP_POINTS}+ points since last reading &nbsp;&middot;&nbsp; 3M % = newest reading's rank within the last 3 months (0 lowest, 100 highest)</span></div>
 <div class="wrap"><table><tr><th>Sym</th><th>Market</th>{head}</tr>
 {"".join(parts)}</table></div>"""
     out = REPORT_MANUAL if manual else REPORT
