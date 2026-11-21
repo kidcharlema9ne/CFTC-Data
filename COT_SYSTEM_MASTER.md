@@ -1,13 +1,13 @@
-# COT MASTER: start here
+# COT SYSTEM MASTER: start here
 
-Michael's COT (Commitments of Traders) work in one place. Any assistant (Claude, ChatGPT or other) that is asked about "my COT system", "the COT price index system", "the COT gap system", "the COT report" or "COT research" should read this file first.
+Michael's COT (Commitments of Traders) work in one place. Any assistant (Claude, ChatGPT or other) that is asked about "my COT system", "the COT System", "the COT price index system", "the COT gap system", "the COT report" or "COT research" should read this file first.
 
 Owner: Michael (futures trader, GitHub user kidcharlema9ne). Last updated: 21 Nov 2026.
 
 ## 1. Names (they all point to the same things)
 
-- **COT report**: the weekly colour-coded table of the 48 markets. Same thing as "run the report".
-- **COT price index system**: the trading system that combines the commercial COT index with a price index. Its old name was the "COT gap system". Michael wants it called the COT price index system.
+- **COT report**: the weekly colour-coded table of the 48 markets. Same thing as "run the report". It is a tool alongside the COT System, not the system itself.
+- **COT System**: the trading system that combines the commercial COT index with a price index. This is its one official name. Older names that mean the same thing: "COT gap system" and "COT price index system". Do not use those in new work.
 - **COT index**: where the current commercial (or large spec, or small spec) net position sits inside its own range over the last 26, 52 or 156 weeks, from 0 to 100. Legacy futures-only report, weekly data from 1 Oct 1992.
 - **Price index**: where the current price sits inside its own range over the last 252 sessions, from 0 to 100.
 
@@ -17,14 +17,14 @@ Owner: Michael (futures trader, GitHub user kidcharlema9ne). Last updated: 21 No
 |---|---|
 | Raw CFTC COT data (all report families) and the COT report script | GitHub `kidcharlema9ne/cot-history` (this repo) |
 | How to run the report | `RUN_REPORT.md` in this repo. Say "run the COT report". Do not rebuild or change the script without Michael's approval. |
-| COT price index system: spec, tests, results, sealed-data rules | GitHub `kidcharlema9ne/insider-buying-research`, folder `research/cot_gap`, branch `claude/cot-gap-20261121` (frozen system) and the out-of-sample branch `claude/cot-gap-oos-20261121` |
-| The running research log (numbered entries, results with run links) | `docs/SHARED_LOG.md` in insider-buying-research. Entries 103 to 123 cover the COT price index system. |
+| COT System: spec, tests, results, sealed-data rules (currently still inside the insider-buying-research repo under its old name, "cot_gap"; Michael wants it moved to its own COT System repo) | GitHub `kidcharlema9ne/insider-buying-research`, folder `research/cot_gap`, branch `claude/cot-gap-20261121` (frozen system) and the out-of-sample branch `claude/cot-gap-oos-20261121` |
+| The running research log (numbered entries, results with run links) | `docs/SHARED_LOG.md` in insider-buying-research. Entries 103 to 123 cover the COT System (logged under its old name, "COT gap"). |
 | Michael's standing decisions | `docs/MICHAEL_DETERMINATIONS.md` in insider-buying-research |
 | Futures PRICES (not in this repo) | Michael's Cloudflare R2 bucket `insider-research` (prefix `marketparquet/futures_daily/`), reachable only through GitHub Actions in insider-buying-research. Start at `FUTURES_DATA.md` there. |
 | Don't-fade list, evidence notes, sources | Claude Project "COT Research", doc `COT_RESEARCH_NOTES.md` (copy of the key points is in section 6 below) |
 | Report rules in plain words | Claude Project "COT Research", doc `COT_REPORT_SPEC.md` (the script in this repo is the authority) |
 
-## 3. The COT price index system (frozen version, "system v1")
+## 3. The COT System (frozen version, "system v1")
 
 - Signal: the commercial COT index plus the price index, minus 100, reaches 40 or more (long or short mirror).
 - Windows: 52-week COT index, 252-session price index.
@@ -66,7 +66,7 @@ A contrarian signal needs a crowd of discretionary or trend-following directiona
 
 ## 8. If you are an assistant without access to these repos
 
-Ask Michael to paste this: "My COT work is documented in GitHub kidcharlema9ne/cot-history, file COT_MASTER.md. The COT price index system is in kidcharlema9ne/insider-buying-research, folder research/cot_gap, branch claude/cot-gap-20261121. Read those before answering."
+Ask Michael to paste this: "My COT work is documented in GitHub kidcharlema9ne/cot-history, file COT_SYSTEM_MASTER.md. The COT System (old name: COT gap) is in kidcharlema9ne/insider-buying-research, folder research/cot_gap, branch claude/cot-gap-20261121. Read those before answering."
 
 ## 9. Keeping this file current
 

@@ -1,6 +1,6 @@
 # cot-history
 
-**Start with [COT_MASTER.md](COT_MASTER.md)**: master map of Michael's COT report, COT price index system, research findings and where each lives.
+**Start with [COT_SYSTEM_MASTER.md](COT_SYSTEM_MASTER.md)**: master map of Michael's COT report, COT System, research findings and where each lives.
 
 Archive of the CFTC Commitments of Traders (COT) bulk files, kept up to date by GitHub Actions.
 
