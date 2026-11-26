@@ -8,20 +8,20 @@ FINAL RULES (do not change unless Michael says so):
 - Legacy futures-only COT from data/raw/legacy_fut; weekly era from 1992-10-01; 156+ clean weeks.
 - Only IBKR-tradable futures (IBKR map below), open interest >= 45,000 as a liquidity proxy,
   minus thin products (THIN). No "Mine" column.
-- Index = (net - min)/(max - min)*100 over 26 or 52 weeks. Briese CoT Movement Index = Comm 26 now
+- Index = (net - min)/(max - min)*100 over 52 or 104 weeks. Briese CoT Movement Index = Comm 52 now
   minus 6 weeks ago; "+" requires a green row with change >= 40 or a red row with change <= -40.
-- COLOUR: Market and IBKR cells are dark green if either Comm 26 or Comm 56 is >= 95
-  and either Large 26 or Large 52 is <= 5 and Small 26 is <= 5. They are dark red if
-  either commercial index is <= 5, either large spec index is >= 95, and Small 26 is >= 95.
-  Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.
+- COLOUR: Market and IBKR cells are dark green if either Comm 52 or Comm 104 is >= 95
+  and either Large 52 or Large 104 is <= 5 and Small 52 is <= 5. They are dark red if
+  either commercial index is <= 5, either large spec index is >= 95, and Small 52 is >= 95.
+  Otherwise, Comm 52 rounding to 100 or 0 gives light green or light red, respectively.
 - ORDER: dark rows first, with a matching 100 or 0 on either commercial index at the
-  top of that group. Light rows follow. Within each group, sort by |Comm 26| then
-  |6-wk change|. Uncoloured rows follow by Comm 26 descending.
-- SYMBOL MARKS: "+" = 40-pt move agreeing with row colour (none on uncoloured rows); "*" = Comm 56 matches Comm 26 at 0 or 100 (after the "+");
-  ">" = absolute position agrees: Comm 26 = 100 and commercials actually net long, or Comm 26 = 0 and
+  top of that group. Light rows follow. Within each group, sort by |Comm 52| then
+  |6-wk change|. Uncoloured rows follow by Comm 52 descending.
+- SYMBOL MARKS: "+" = 40-pt move agreeing with row colour (none on uncoloured rows); "*" = Comm 104 matches Comm 52 at 0 or 100 (after the "+");
+  ">" = absolute position agrees: Comm 52 = 100 and commercials actually net long, or Comm 52 = 0 and
   actually net short; "&" = green and above the 20-day SMA, or red and below it.
 - No Comm Net column.
-- No Mine, "Comm 26 six wks ago" or "weeks since 40-pt move" columns.
+- No Mine, "Comm 52 six wks ago" or "weeks since 40-pt move" columns.
 """
 import io
 import json
@@ -198,13 +198,12 @@ def build(df: pd.DataFrame) -> pd.DataFrame:
                "date": g["date"].iloc[-1],
                "oi": g["oi"].iloc[-1]}
         for grp in ("comm", "large", "small"):
-            for n in (26, 52):
+            for n in (52, 104):
                 row[f"{grp}_{n}"] = cot_index(g[grp], n).iloc[-1]
-        row["comm_56"] = cot_index(g["comm"], 56).iloc[-1]
-        ci = cot_index(g["comm"], 26)
+        ci = cot_index(g["comm"], 52)
         mv = ci.diff(MOVE_WEEKS)
-        row["comm_26_move6"] = mv.iloc[-1]
-        row["comm_26_ago6"] = ci.iloc[-1 - MOVE_WEEKS]
+        row["comm_52_move6"] = mv.iloc[-1]
+        row["comm_52_ago6"] = ci.iloc[-1 - MOVE_WEEKS]
         row["move6_ago6"] = mv.iloc[-1 - MOVE_WEEKS]
         hit = np.where(mv.abs().values >= MOVE_THRESHOLD)[0]
         row["wks_since_signal"] = (len(mv) - 1 - hit[-1]) if len(hit) else np.nan
@@ -233,36 +232,36 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
     ext = lambda v: v >= 99.5 or v < 0.5  # matches the rounded value shown in the table
     res = res.copy()
     res["name"] = res["name"].str.replace(r" - (CHICAGO|NEW YORK|ICE|COMMODITY|CBOE).*$", "", regex=True)
-    dark_green = (res["comm_26"].ge(95) | res["comm_56"].ge(95)) & (
-        (res["large_26"].le(5) | res["large_52"].le(5)) & res["small_26"].le(5)
+    dark_green = (res["comm_52"].ge(95) | res["comm_104"].ge(95)) & (
+        (res["large_52"].le(5) | res["large_104"].le(5)) & res["small_52"].le(5)
     )
-    dark_red = (res["comm_26"].le(5) | res["comm_56"].le(5)) & (
-        (res["large_26"].ge(95) | res["large_52"].ge(95)) & res["small_26"].ge(95)
+    dark_red = (res["comm_52"].le(5) | res["comm_104"].le(5)) & (
+        (res["large_52"].ge(95) | res["large_104"].ge(95)) & res["small_52"].ge(95)
     )
     res = res.round({c: 2 for c in res.columns if c not in ("date", "name", "ibkr", "exch")})
     res["top"] = dark_green | dark_red
-    res["green"] = dark_green | (~res["top"] & res["comm_26"].ge(99.5))
-    res["abs_comm"] = res["comm_26"].abs()
-    res["abs_move"] = res["comm_26_move6"].abs()
-    res["coloured"] = res["top"] | res["comm_26"].apply(ext)
+    res["green"] = dark_green | (~res["top"] & res["comm_52"].ge(99.5))
+    res["abs_comm"] = res["comm_52"].abs()
+    res["abs_move"] = res["comm_52_move6"].abs()
+    res["coloured"] = res["top"] | res["comm_52"].apply(ext)
     res["plus"] = res["coloured"] & (
-        (res["green"] & res["comm_26_move6"].ge(MOVE_THRESHOLD))
-        | (~res["green"] & res["comm_26_move6"].le(-MOVE_THRESHOLD))
+        (res["green"] & res["comm_52_move6"].ge(MOVE_THRESHOLD))
+        | (~res["green"] & res["comm_52_move6"].le(-MOVE_THRESHOLD))
     )
     res["matching_comm_extreme"] = (
-        dark_green & (res["comm_26"].ge(99.5) | res["comm_56"].ge(99.5))
+        dark_green & (res["comm_52"].ge(99.5) | res["comm_104"].ge(99.5))
     ) | (
-        dark_red & (res["comm_26"].lt(0.5) | res["comm_56"].lt(0.5))
+        dark_red & (res["comm_52"].lt(0.5) | res["comm_104"].lt(0.5))
     )
     top = res[res["top"]].sort_values(
         ["matching_comm_extreme", "abs_comm", "abs_move"], ascending=False
     )
     mid = res[res["coloured"] & ~res["top"]].sort_values(["abs_comm", "abs_move"], ascending=False)
-    rest = res[~res["coloured"]].sort_values(["comm_26", "comm_26_move6"], ascending=False)
+    rest = res[~res["coloured"]].sort_values(["comm_52", "comm_52_move6"], ascending=False)
     res = pd.concat([top, mid, rest])
-    heads = ["Market", "IBKR", "Comm 26", "Large 26", "Small 26", "Comm 26 chg (6 wk)",
+    heads = ["Market", "IBKR", "Comm 52", "Large 52", "Small 52", "Comm 52 chg (6 wk)",
              "Chg (6 wk) as of 6 wks ago",
-             "Comm 52", "Large 52", "Small 52", "Open Int", "Comm jump 1wk (% OI)", "Jump z"]
+             "Comm 104", "Large 104", "Small 104", "Open Int", "Comm jump 1wk (% OI)", "Jump z"]
     fmt = lambda v, f: "" if pd.isna(v) else format(v, f)
     sma20 = sma20 or {}
     price_note = f"Daily futures close as of {price_date}." if price_date else "Current price snapshot unavailable."
@@ -276,21 +275,21 @@ def build_html(res: pd.DataFrame, asof: str, price_date: str = "", sma20: dict =
             else:
                 style = "background:#c6efce;font-weight:bold" if lng else "background:#ffc7ce;font-weight:bold"
         marks = "+" if r["plus"] else ""
-        if (r["comm_26"] >= 99.5 and r["comm_56"] >= 99.5) or (
-            r["comm_26"] < 0.5 and r["comm_56"] < 0.5
+        if (r["comm_52"] >= 99.5 and r["comm_104"] >= 99.5) or (
+            r["comm_52"] < 0.5 and r["comm_104"] < 0.5
         ):
             marks += "*"
-        if (r["comm_26"] >= 99.5 and r["comm_net"] > 0) or (r["comm_26"] < 0.5 and r["comm_net"] < 0):
+        if (r["comm_52"] >= 99.5 and r["comm_net"] > 0) or (r["comm_52"] < 0.5 and r["comm_net"] < 0):
             marks += ">"
         if r["coloured"]:
             trend = sma20.get(PRICE_ROOTS.get(r["ibkr"], r["ibkr"]))
             if trend == ("above" if lng else "below"):
                 marks += "&amp;"
         cells = [(style, r["name"]), (style, r["ibkr"] + marks),
-                 ("", fmt(r["comm_26"], ".0f")), ("", fmt(r["large_26"], ".0f")), ("", fmt(r["small_26"], ".0f")),
-                 ("", fmt(r["comm_26_move6"], "+.0f")),
-                 ("", fmt(r["move6_ago6"], "+.0f")),
                  ("", fmt(r["comm_52"], ".0f")), ("", fmt(r["large_52"], ".0f")), ("", fmt(r["small_52"], ".0f")),
+                 ("", fmt(r["comm_52_move6"], "+.0f")),
+                 ("", fmt(r["move6_ago6"], "+.0f")),
+                 ("", fmt(r["comm_104"], ".0f")), ("", fmt(r["large_104"], ".0f")), ("", fmt(r["small_104"], ".0f")),
                  ("", fmt(r["oi"], ",.0f")), ("", fmt(r["comm_jump_pct_oi"], "+.2f")),
                  ("", fmt(r["jump_z"], "+.2f"))]
         rows.append("<tr>" + "".join(
@@ -308,11 +307,11 @@ td:nth-child(1){{text-align:left}} td:nth-child(2){{text-align:center}}
 </style></head><body>
 <h1>Legacy COT Index Report &mdash; liquid IBKR futures &mdash; as of {asof}</h1>
 <p>{len(res)} markets. Index 0 = most net short of the window, 100 = most net long. Source: CFTC legacy futures-only COT.</p>
-<p><b>Dark green:</b> Comm 26 or Comm 56 &ge; 95, Large 26 or Large 52 &le; 5, and Small 26 &le; 5.
-<b>Dark red:</b> Comm 26 or Comm 56 &le; 5, Large 26 or Large 52 &ge; 95, and Small 26 &ge; 95.
+<p><b>Dark green:</b> Comm 52 or Comm 104 &ge; 95, Large 52 or Large 104 &le; 5, and Small 52 &le; 5.
+<b>Dark red:</b> Comm 52 or Comm 104 &le; 5, Large 52 or Large 104 &ge; 95, and Small 52 &ge; 95.
 Dark rows are listed first ({int(res['top'].sum())} today), with a matching 100 (green) or 0 (red)
-on either commercial index at the top of that group. Otherwise, Comm 26 rounding to 100 or 0 gives light green or light red, respectively.</p>
-<p><b>+</b> after the symbol = Comm 26 rose at least 40 points in 6 weeks for a green row, or fell at least 40 points for a red row; no + on uncoloured rows. <b>*</b> = Comm 56 and Comm 26 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
+on either commercial index at the top of that group. Otherwise, Comm 52 rounding to 100 or 0 gives light green or light red, respectively.</p>
+<p><b>+</b> after the symbol = Comm 52 rose at least 40 points in 6 weeks for a green row, or fell at least 40 points for a red row; no + on uncoloured rows. <b>*</b> = Comm 104 and Comm 52 are both at 0 or both at 100. <b>&gt;</b> = commercials are actually net long with a 100 score, or actually net short with a 0 score (absolute, not just relative).</p>
 <p><b>&amp;</b> = green and above the 20-day simple moving average, or red and below it. {price_note}</p>
 <div class="wrap"><table><tr>{"".join(f"<th>{h}</th>" for h in heads)}</tr>
 {chr(10).join(rows)}
